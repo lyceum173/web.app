@@ -1,0 +1,26 @@
+footer {
+    color: var(--primary);
+    text-align: start;
+  
+  }
+
+.footer__top {
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+  background-color: #ededed !important;
+}
+
+.footer__copy {
+  text-align: center;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+}
+.footer__top a {
+  display: flex !important;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+footer svg *{
+  stroke: var(--primary) !important;
+}

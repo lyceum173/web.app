@@ -1,0 +1,173 @@
+@import url(./css/components/footer.css);
+@import url(./css/components/anchor.css);
+@import url(./css/components/button.css);
+@import url(./css/components/input.css);
+@supports (overflow:clip) {
+  .wrapper {
+    overflow: clip;
+  }
+}
+
+@font-face {
+  font-family: "Nunito";
+  src: url("@/assets/fonts/Nunito-Regular.ttf");
+}
+@font-face {
+  font-family: "MTA";
+  src: url("@/assets/fonts/MontserratAlternates-Regular.ttf");
+}
+.tox .tox-statusbar .tox-statusbar__right-container {
+  display: none;
+}
+
+.tox .tox-tbtn--active, .tox .tox-tbtn--enabled, .tox .tox-tbtn--enabled:focus, .tox .tox-tbtn--enabled:hover {
+  background: #2dbdaa6a !important;
+  border: 0;
+  box-shadow: none;
+  color: #222f3e;
+  position: relative;
+}
+:root {
+  --primary: #343f64;
+  --accent: #2dbdaa;
+  --hover: #e9db89;
+  --shadow-dark: #000;
+  --bg-body: #f6f6f6;
+  --bg-dark: #232a45;
+  --bg-light: #fcfcfc;
+  --bg-primary: #343f64;
+  --bg-hover-light: rgba(45, 100, 128, 0.5);
+  --text-primary: #343f64;
+  --text-over-dark: #fcfcfc;
+  --text-over-accent: #fcfcfc;
+  --text-hover-over-dark: #e9db89;
+}
+/* root {
+  --primary: #343f64;
+  --accent: #bc448b;
+  --hover: #e9db89;
+  --ukr-blue: #005bbc;
+  --ukr-yellow: #ffd600;
+  --shadow-dark: #000;
+  --bg-body: #f6f6f6;
+  --bg-dark: #232a45;
+  --bg-light: #fcfcfc;
+  --bg-primary: #343f64;
+  --bg-hover-light: rgba(45, 100, 128, 0.5);
+  --text-primary: #343f64;
+  --text-over-dark: #fcfcfc;
+  --text-over-accent: #fcfcfc;
+  --text-hover-over-dark: #e9db89;
+} */
+.wrapper {
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+main {
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+}
+main {
+  flex: 1 1 ;
+}
+*:focus {
+  outline: none !important;
+}
+* {
+  padding: 0;
+  margin: 0;
+  border: 0;
+}
+body, html {
+  height: 100%;
+}
+body {
+  line-height: 1;
+  font-size: 1rem;
+  -ms-text-size-adjust: 100%;
+  -moz-text-size-adjust: 100%;
+  -webkit-text-size-adjust: 100%;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  font-family: "Nunito";
+  background-color: var(--bg-body);
+}
+
+*::after, *::before {
+  display: inline-block;
+}
+
+*, *::after, *::before {
+  box-sizing: border-box;
+}
+
+[class*='__container'] {
+  max-width: 71.25rem;
+  margin: 0 auto;
+  padding: 0 .9375rem;
+}
+header {
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+ 
+}
+
+@media (max-width: 640px) {
+    header {
+      font-size: 0.75rem !important;
+    }
+    .main{
+      margin-top: 2.5rem !important;
+    }
+    .hero {
+      margin-top: 0.25rem !important;
+    }
+
+    .hero__text__item  {
+      font-size: 2rem !important;
+    }
+    .hero__text__item mark  {
+      font-size: 1.5rem !important;
+    }
+}
+header, footer {
+  background: var(--bg-light);
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.042), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+}
+.header__container {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+header button {
+  background-color: black;
+  color: white;
+  padding-left: 1rem;
+  cursor: pointer;
+  padding-right: 1rem;
+  border-radius: 9999px;
+}
+footer span:nth-of-type(2) {
+  color: var(--accent)
+}
+.wrapper {
+  position: relative;
+  top: 0px;
+}
+
+.breadcrumbs {
+  margin-bottom: 1rem;
+}
+.breadcrumbs a svg{
+  transform: translateY(2px);
+}
+.breadcrumbs a{
+  height: min-content;
+  display: flex;
+  align-items: center;
+}

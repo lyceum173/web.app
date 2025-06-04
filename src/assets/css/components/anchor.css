@@ -1,0 +1,31 @@
+
+a {
+    position: relative !important;
+    display: inline !important;
+    text-decoration: none;
+    color: inherit;
+    text-decoration: none;
+    --a: var(--accent) !important;
+    background: linear-gradient(0deg, var(--a) 50%, var(--a) 50%) no-repeat right bottom / 0 0.125rem;
+    -webkit-transition: background-size 350ms;
+    transition: background-size 500ms;
+}
+
+a {
+    width: fit-content !important;
+   
+}
+/* header a, footer a {
+    --a: var(--accent) !important;
+} */
+/* main a {
+    color: var(--text-primary) !important;
+    --a: var(--accent) !important;
+} */
+
+a:not(.sch-logo):hover{
+    background-size: 100% 0.125rem;
+    background-position-x: left;
+    text-decoration: none;
+    color: inherit;
+}

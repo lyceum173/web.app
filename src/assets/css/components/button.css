@@ -1,0 +1,92 @@
+
+button:hover {
+    color: var(--accent);
+
+    border-radius: 0px !important;
+}
+button:not(.pagination__item) {
+    /* border: dashed transparent 2px; */
+    transition: all 0.5s;
+    position: relative;
+    cursor: pointer;
+    /* position: absolute;
+    bottom: -0.5rem;
+    right: -0.5rem; */
+    padding: 0.5rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    background-color: black;
+    border-radius: 1rem;
+    color: white;
+    font-family: "Nunito";
+    box-shadow: 0 4px 6px -1px #2DBDAA3A, 0 2px 4px -2px #1A312E3A;
+    /* box-shadow: 0 4px 6px 5px var(--accent), 0 2px 4px -2px var(--primary); */
+    /* box-shadow: 0 10px 25px 10px var(--accent),  0 8px 10px -6px var(--primary); */
+}
+
+.hero__card button {
+    position: absolute;
+    bottom: -1rem;
+    left: 50%;
+    transform: translateX(-50%);
+}
+@media (max-width: 768px) {
+
+    .hero__card button {
+        bottom: -1.5rem;
+    }
+}
+button:not(.pagination__item)::after  {
+    transition: all 0.5s ease;
+    background-color:rgb(0, 0, 0);
+    width: 2px;
+    height: 0;
+    content: " ";
+    position: absolute;
+    bottom: -0.25rem;
+    right:-0.25rem;
+}
+button:not(.pagination__item)::before  {
+    transition: all 0.5s ease;
+    background-color: black;
+    height: 2px;
+    width: 0;
+    content: " ";
+    position: absolute;
+    bottom: -0.25rem;
+    right:-0.25rem;
+}
+button:not(.pagination__item):hover::after {
+
+    height: 100%;
+    bottom: -0.25rem;
+    right:-0.25rem;
+}
+
+button:not(.pagination__item):hover::before {
+
+width: 100%;
+bottom: -0.25rem;
+right:-0.25rem;
+}
+
+main[cms] button {
+    border-radius: 0.25rem !important;
+ }
+ main[cms] button::after,  main[cms] button::before {
+     display: none !important;
+ }
+ main[cms] button:hover {
+     border-radius: 0.25rem !important;
+     background-color: rgb(34, 34, 34);
+ }
+ 
+ main[cms] button:focus:active {
+     background-color: rgb(45, 45, 45);
+     color: rgb(217, 217, 217);
+ }
+ 
+ aside nav {
+     display: flex;
+     gap: 0.25rem;
+ }
