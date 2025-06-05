@@ -542,12 +542,12 @@ useHead({
       ],
     })
 
-onMounted(() => {
+// onMounted(() => {
 
 
-    posts.value = p.filter(i => i.published === true)
+//     posts.value = p.filter(i => i.published === true)
 
-})
+// })
 
 
 function goToAuth() {

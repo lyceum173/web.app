@@ -8,7 +8,7 @@
      <img src="@/assets/logo.svg" alt="" width="100">
                     </div> -->
                     <div class="form__content">
-                        <h1 class="logo"><mark>e</mark>Lyceum173</h1>
+                        <h1 class="logo"><mark>NMT</mark>Lyceum173</h1>
                         <p>Адміністрування</p>
     
     
@@ -44,7 +44,7 @@
                     </div>
                 </button> 
                 <br>
-                <p class="comment">Використовуючи цей додаток Ви погоджуєтесь з <a class="policy" href="/privacy-policy" target="_blank">політикою конфіденційності</a> та <a class="policy" href="/terms-of-service" target="_blank">умовами користування</a></p>
+                <!-- <p class="comment">Використовуючи цей додаток Ви погоджуєтесь з <a class="policy" href="/privacy-policy" target="_blank">політикою конфіденційності</a> та <a class="policy" href="/terms-of-service" target="_blank">умовами користування</a></p> -->
                     </div>
                  
                 </form>
@@ -69,6 +69,7 @@
     import HeaderComponent from '@/components/HeaderComponent.vue';
     import DashboardTemplate from '@/templates/DashboardTemplate.vue';
     import TechHeader from '@/components/TechHeader.vue';
+    import "@/assets/nmt/css/style.css"
     import { onMounted, ref } from 'vue';
     const authed = ref(false)
     const error = ref(null)
@@ -151,7 +152,6 @@
      }
     .loading {
         position: absolute;
-        /* border:red solid .5px; */
         display: flex;
         justify-self: center;
         gap: .25rem;
@@ -196,12 +196,13 @@
     }
     .logo {
         font-family: "MTA";
-        color: var(--primary);
+
         font-weight: 700 !important;
     }
     
     .logo mark {
-        color: var(--accent);
+        color: var(--nmt);
+        font-family: "Open Sans";
         background-color: transparent;
     }
     @keyframes loadingSteps {
@@ -222,7 +223,7 @@
     }
     
     .form-after {
-        background: linear-gradient(45deg, var(--primary), var(--accent));
+        background: linear-gradient(-135deg, #EA818CFF, #A11A28FF);
         top: 0;
         left: 0;
         width: 50dvw;

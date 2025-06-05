@@ -3,31 +3,60 @@
 <main class="main" :class="{auth: !authed}">
         <div class="main__container">
             <div class="form-after" v-if="!authed"></div>
-            <form v-if="!authed" class="form" id="authForm">
+            <form v-if="!authed" class="form" id="authForm" @submit.prevent>
                 <!-- <div class="form__logo">
  <img src="@/assets/logo.svg" alt="" width="100">
                 </div> -->
                 <div class="form__content">
-                    <h2>Вхід</h2>
-                    <p>Lyceum173 Web App</p>
-                <!-- <img src="@/assets/logo.svg" alt="" width="100"> -->
-                <!-- <br>
-                <div class="input">
+                    <h1 class="logo"><mark>e</mark>Lyceum173</h1>
+                    <p>Авторизація</p>
+
+
+                <br>
+                <!-- <div class="input">
                     <label for="username">Login</label>
                     <input type="text" placeholder="-" id="username">
                 </div>
                 <div class="input">
                     <label for="password">Password</label>
                     <input type="password" placeholder="-" id="password">
-                </div> -->
+                </div>
+                <br> -->
+                <div class="error" v-if="error">
+                    <p style="color: red !important;">Помилка Авторизації</p>
+                    <p v-text="error.message"></p>
+                </div>
+<div v-else>
+    <p>Увійдіть, використовуючи шкільну пошту</p>
+    <p>Приклад:<strong>exmaple@lyceum173.kyiv.ua</strong></p>
+</div>
+
+
+
+               
                 <br>
-                <p>Увійдіть використовуючи шкільни пошту</p>
-            <p><strong>mail@lyceum173.kyiv.ua</strong></p>
                 <br>
-                <br>
-                <button @click="authLogin">
-                    <span  id="auth-button-text">
+                <!-- <button>
+                    <span >
                     Увійти
+                </span>
+            </button> 
+            <p class="or">
+                <span>або</span>
+            </p> -->
+
+            <div id="g_id_signin"></div>
+
+            <button @click="authLogin" hidden>
+                    <span  id="auth-button-text">
+                    Увійти з <mark class="google">
+                        <span>G</span>
+                        <span>o</span>
+                        <span>o</span>
+                        <span>g</span>
+                        <span>l</span>
+                        <span>e</span>
+                    </mark>
                 </span>
 
                 <div class="loading" id="auth-button-loading">
@@ -63,33 +92,106 @@ import HeaderComponent from '@/components/HeaderComponent.vue';
 import DashboardTemplate from '@/templates/DashboardTemplate.vue';
 import TechHeader from '@/components/TechHeader.vue';
 import { onMounted, ref } from 'vue';
-const authed = ref(false)
-import { auth, signInWithPopup, provider, signOut } from '@/assets/js/app';
-// setTimeout(() => {
-//     authed.value = true
-// }, 5000)
 
-onMounted(()=>{
-    document.getElementById("authForm").addEventListener("submit", (e) => {
-        e.preventDefault()
-        // authed.value = true
-    })
-    // signOut(auth)
+const error = ref(null)
+import { auth, signInWithRedirect, signInWithCredential,GoogleAuthProvider, provider, onAuthStateChanged, getRedirectResult, signOut} from '@/assets/js/app';
+import { signInWithPopup } from 'firebase/auth';
+import router from '@/router';
 
-  
+onMounted(async () => {
+
+    // onAuthStateChanged(auth, (user) => {
+    //     console.log("👤 Auth state changed:", user)
+    //    if (user && user.email.endsWith("@lyceum173.kyiv.ua")) {
+    //     router.push("/dashboard/")
+    //    }
+    //   })
+
+   const interval = setInterval(() => {
+    if (window.google && window.google.accounts && window.google.accounts.id) {
+      clearInterval(interval); // stop checking once it's available
+
+      window.google.accounts.id.initialize({
+        client_id: '1043664514681-2u2p7kbqkmk4926bmqmgf91hrbluhgni.apps.googleusercontent.com',
+        callback: handleCredentialResponse,
+      });
+
+      window.google.accounts.id.renderButton(
+        document.getElementById("g_id_signin"),
+        {
+          theme: "outline",
+          size: "large",
+        }
+      );
+    }
+  }, 100);
 })
-const authLogin = () => {
-    document.getElementById("auth-button-text").classList.add("hide")
-    document.getElementById("auth-button-loading").classList.add("show")
-    signInWithPopup(auth, provider).then(u => {
-        console.log(u)
+
+const handleCredentialResponse = (response) => {
+  const credential = GoogleAuthProvider.credential(response.credential);
+
+  signInWithCredential(auth, credential)
+    .then(({ user }) => {
+      if (user.email.endsWith('@lyceum173.kyiv.ua')) {
+        router.push('/dashboard/');
+      } else {
+        alert('Увійдіть з шкільної пошти');
+      }
     })
+    .catch(err => {
+      console.error(err);
+      alert('Помилка входу: ' + err.message);
+    });
+};
+
+const authLogin = () => {
+  const btnText = document.getElementById("auth-button-text")
+  const btnLoading = document.getElementById("auth-button-loading")
+
+  btnText?.classList.add("hide")
+  btnLoading?.classList.add("show")
+
+  setTimeout(() => {[]
+    signInWithPopup(auth, provider).then((r) => {
+        console.log(r)
+        if (r.user.email.endsWith("@lyceum173.kyiv.ua")) {
+            router.push("/dashboard/")
+        } else {
+            error.value = {"message": "Увійдіть з шкільної пошти"}
+            btnText?.classList.remove("hide")
+            btnLoading?.classList.remove("show")
+        }
+    })
+  }, 200)
 }
 
 
 </script>
 <style scoped>
-
+.google {
+    background-color: transparent;
+    font-weight: bold;
+    /* font-family: "MTA"; */
+}
+.google span:nth-child(1){
+    color: #4285F4;
+}
+.google span:nth-child(2) {
+    color: #EA4335;
+}
+.google span:nth-child(3) {
+    color: #FBBC05;
+}
+.google span:nth-child(4){
+    color: #4285F4;
+    
+}
+.google span:nth-child(5){
+    color: #34A853;
+}
+.google span:nth-child(6){
+    color: #EA4335;
+}
 .main {
     margin-top: 2.5rem;
 }
@@ -99,7 +201,7 @@ p {
 }
 .comment {
     opacity: 0.5 !important;
-    font-size: 0.75rem;
+    /* font-size: 0.75rem; */
 }
 /* form img {
     margin: 0 auto;
@@ -178,7 +280,16 @@ p {
 .loading span:nth-child(3) {
   animation-delay: 0.4s;
 }
+.logo {
+    font-family: "MTA";
+    color: var(--primary);
+    font-weight: 700 !important;
+}
 
+.logo mark {
+    color: var(--accent);
+    background-color: transparent;
+}
 @keyframes loadingSteps {
   0% {
     transform: translateY(0);

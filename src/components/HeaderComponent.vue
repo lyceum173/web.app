@@ -1,7 +1,7 @@
 <template>
         <header class="header">
         <div class="header__container">
-            <router-link to="/"><h1><mark>e</mark>Lyceum173</h1></router-link>
+            <router-link to="/"><h1><mark>LMS</mark>Lyceum173</h1></router-link>
             <!-- <button>
                 Увійти
             </button> -->

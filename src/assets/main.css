@@ -2,6 +2,7 @@
 @import url(./css/components/anchor.css);
 @import url(./css/components/button.css);
 @import url(./css/components/input.css);
+
 @supports (overflow:clip) {
   .wrapper {
     overflow: clip;
@@ -15,6 +16,10 @@
 @font-face {
   font-family: "MTA";
   src: url("@/assets/fonts/MontserratAlternates-Regular.ttf");
+}
+@font-face {
+  font-family: "Open Sans";
+  src: url("@/assets/fonts/OpenSans-VariableFont_wdth,wght.ttf");
 }
 .tox .tox-statusbar .tox-statusbar__right-container {
   display: none;
