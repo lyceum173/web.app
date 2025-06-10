@@ -2,6 +2,7 @@
 @import url(./css/components/anchor.css);
 @import url(./css/components/button.css);
 @import url(./css/components/input.css);
+@import url(./css/components/modal.css);
 
 @supports (overflow:clip) {
   .wrapper {
@@ -34,11 +35,12 @@
 }
 :root {
   --primary: #343f64;
+
   --accent: #2dbdaa;
   --hover: #e9db89;
   --shadow-dark: #000;
   --bg-body: #f6f6f6;
-  --bg-dark: #232a45;
+  --bg-dark: #e6e8ef;
   --bg-light: #fcfcfc;
   --bg-primary: #343f64;
   --bg-hover-light: rgba(45, 100, 128, 0.5);
@@ -46,6 +48,9 @@
   --text-over-dark: #fcfcfc;
   --text-over-accent: #fcfcfc;
   --text-hover-over-dark: #e9db89;
+
+  --lms-dark: #262e49 ;
+  --lms-bg-dark: #22283d;
 }
 /* root {
   --primary: #343f64;

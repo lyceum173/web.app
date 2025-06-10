@@ -16,6 +16,12 @@ import SignOut from '@/views/SignOut.vue'
 import LoginView from '@/views/nmt/LoginView.vue'
 import AdminLogin from '@/views/nmt/admin/AdminLogin.vue'
 import DashboarView from '@/views/nmt/DashboarView.vue'
+import LogsView from '@/views/LogsView.vue'
+import DragNDrop from '@/views/nmt/NMTDemo.vue'
+import TeacherDashboardView from '@/views/lms/teacher/TeacherDashboardView.vue'
+import AllCoursesView from '@/views/lms/teacher/AllCoursesView.vue'
+import TeacherNMTView from '@/views/lms/teacher/TeacherNMTView.vue'
+
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -24,6 +30,12 @@ const router = createRouter({
       name: 'home',
       component: HomeView,
     },
+    {
+      path: '/nmt/demo',
+      name: 'nmtdemo',
+      component: DragNDrop,
+    },
+
     {
       path: '/privacy-policy',
       name: 'privacy-policy',
@@ -58,6 +70,21 @@ const router = createRouter({
       path: '/dashboard/',
       name: 'dashboard',
       component: DashboardView,
+    },
+    {
+      path: '/teacher/dashboard',
+      name: 'teacher-dashboard',
+      component: TeacherDashboardView,
+    },
+    {
+      path: '/teacher/courses/all',
+      name: 'teacher-courses-all',
+      component: AllCoursesView,
+    },
+    {
+      path: '/teacher/nmt',
+      name: 'teacher-nmt',
+      component: TeacherNMTView,
     },
     {
       path: '/manager/',
@@ -105,6 +132,11 @@ const router = createRouter({
       path: '/nmt/admin/',
       name: 'nmt-admin',
       component: AdminLogin,
+    },
+    {
+      path: '/dev/logs/',
+      name: 'dev-logs',
+      component: LogsView,
     }
   ],
 })

@@ -1,0 +1,102 @@
+main[lms] button {
+    background-color: rgba(171, 184, 255, 0.442) !important;
+    border-radius: 0.5rem !important;
+    color: var(--primary) !important;
+    box-shadow: none !important;
+    &:hover {
+        background-color: rgba(195, 204, 255, 0.442) !important;
+    }
+    &:focus:active {
+        background-color: rgba(152, 163, 227, 0.442) !important;
+    }
+}
+main[lms] button.danger {
+    background-color: rgba(255, 145, 145, 0.442) !important;
+    color: rgb(223, 20, 20) !important;
+}
+
+main[lms] button.danger {
+    background-color: rgba(255, 145, 145, 0.442) !important;
+    color: rgb(223, 20, 20) !important;
+
+    box-shadow: none !important;
+    &:hover {
+        background-color: rgba(255, 195, 195, 0.442) !important;
+    }
+    &:focus:active {
+        background-color: rgba(227, 91, 91, 0.442) !important;
+    }
+}
+main[lms] button::after,main[lms]  button::before {
+    display: none !important;
+}
+
+main[lms] button:hover{
+    border-radius: 0.5rem !important;
+}
+
+@media (prefers-color-scheme: dark) {
+    main[lms] button {
+        background-color: rgba(82, 91, 138, 0.442) !important;
+        border-radius: 0.5rem !important;
+        color: #bdccff !important;
+        box-shadow: none !important;
+        &:hover {
+            background-color: rgba(115, 121, 153, 0.442) !important;
+        }
+        &:focus:active {
+            background-color: rgba(84, 90, 120, 0.442) !important;
+        }
+    } 
+
+    main[lms] button.danger {
+        background-color: rgba(142, 79, 79, 0.442) !important;
+        color: rgb(255, 142, 142) !important;
+    
+        box-shadow: none !important;
+        &:hover {
+            background-color: rgba(255, 195, 195, 0.442) !important;
+        }
+        &:focus:active {
+            background-color: rgba(227, 91, 91, 0.442) !important;
+        }
+    }
+}
+
+.input input {
+    font-family: "Nunito";
+    border-radius:.5rem !important;
+    box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+    border: rgb(233, 233, 240) solid 1px;
+}
+
+@media (prefers-color-scheme: dark) {
+    .input input {
+        color: white;
+        border-radius:.5rem !important;
+        background-color:#262E49;
+        border-color: #565d77 !important;
+        box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+        border: solid 1px;
+    }
+    .input input::placeholder {
+        color: #565d77;
+        transition: all 0.75s
+    }
+
+    .input input:focus {
+        border-color: #838db3 !important;
+    }
+
+    .input input:focus::placeholder {
+        color: #838db3;
+    }
+}
+@media (prefers-color-scheme: dark) {
+    html, body {
+        background-color: var(--lms-bg-dark);
+    }
+}
+html, body {
+    background-color: #E6E8EF;
+}

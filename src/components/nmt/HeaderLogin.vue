@@ -1,11 +1,11 @@
 <template>
-    <header class="header">
+    <header class="header"  :class="{ relative: relativePosition }">
     <div class="header__container">
         <a href="/nmt/" @drag.prevent @dragstart.prevent><h1><mark>NMT</mark>Lyceum173</h1></a>
        <div class="dropdown" v-if="isLogin">
 
         <div class="dropdown__name">
-            <a href="/nmt/dashboard">Pryima</a>
+            <a href="/nmt/dashboard">{{ displayName }}</a>
         </div>
         <div class="dropdown__icon">
             <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" class="injected-svg" data-src="https://cdn.hugeicons.com/icons/arrow-up-01-solid-standard.svg" xmlns:xlink="http://www.w3.org/1999/xlink" role="img" color="#000000">
@@ -23,11 +23,21 @@
 --a: transparent !important;
 }
 
+
 header {
-position: fixed;
 width:100%;
 z-index: 1000;
 top: 0px;
+padding-top: 1.5rem;
+padding-bottom: 1.5rem;
+}
+header:not(.relative) {
+  position: fixed;
+}
+
+/* If relative prop is true, apply relative position */
+header.relative {
+  position: relative;
 }
 header, footer {
 font-family: "MTA";
@@ -84,4 +94,14 @@ import { ref } from 'vue';
 const isLogin = ref(false)
 console.log(window.location.pathname === "/nmt/login")
 isLogin.value = window.location.pathname !== "/nmt/login"
+
+const displayName = ref(sessionStorage.getItem("n_displayName"))
+const props = defineProps({
+  relative: {
+    type: Boolean,
+    default: false
+  }
+})
+
+const relativePosition = props.relative
 </script>

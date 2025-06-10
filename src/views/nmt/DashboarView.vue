@@ -1,13 +1,23 @@
 <template>
-    <HeaderLogin></HeaderLogin>
-    <main class="main">
+    <HeaderLogin relative></HeaderLogin>
+    <main v-if="isSeb" class="main" nmt>
+<dialog id="code" class="modal">
+    <div class="modal-box">
+        <h3 class="text-lg font-bold">Код доступу до блоку</h3>
+        <br>
+        <input type="text" maxlength="3" v-model="accessCode">
+        <p class="py-4"></p>
+        <div class="modal-action">
+            <form method="dialog">
+                <button class="btn" @click="startExam()">Перейти до тесту</button>
+            </form>
+        </div>
+</div>
+</dialog>
         <div class="main__container">
-
-
             <p>Вступні випробування</p>
-
-            <div v-if="!testEnded" class="exam-item">
-      <div class="exam-item__image" disabled>
+            <div  class="exam-item" v-if="agreeAccepted">
+      <div class="exam-item__image">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
           <path
             d="M243.4 2.6l-224 96c-14 6-21.8 21-18.7 35.8S16.8 160 32 160l0 8c0 13.3 10.7 24 24 24l400 0c13.3 0 24-10.7 24-24l0-8c15.2 0 28.3-10.7 31.3-25.6s-4.8-29.9-18.7-35.8l-224-96c-8-3.4-17.2-3.4-25.2 0zM128 224l-64 0 0 196.3c-.6 .3-1.2 .7-1.8 1.1l-48 32c-11.7 7.8-17 22.4-12.9 35.9S17.9 512 32 512l448 0c14.1 0 26.5-9.2 30.6-22.7s-1.1-28.1-12.9-35.9l-48-32c-.6-.4-1.2-.7-1.8-1.1L448 224l-64 0 0 192-40 0 0-192-64 0 0 192-48 0 0-192-64 0 0 192-40 0 0-192zM256 64a32 32 0 1 1 0 64 32 32 0 1 1 0-64z" />
@@ -15,20 +25,21 @@
       </div>
       <div class="exam-item__info">
         <p id="test-title">{{ testTitle }}</p>
-        <button @click="startExam" disabled id="start-exam" class="exam-button">
+        <button onclick="code.showModal()" id="start-exam" class="exam-button">
           <p v-if="testEnded">ТЕСТУВАННЯ ЗАВЕРШЕНО</p>
           <p v-else> ПЕРЕЙТИ ДО ТЕСТУ</p>
         </button>
       </div>
     </div>
-            <div class="agreement-section" hidden>
+            <div class="agreement-section" v-if="!agreeAccepted">
           <div class="agreement-content" id="agreementContent">
             <div class="agreement-content__text">
               <div class="agreement-content-text">
                 <p>Ви увійшли на персональну сторінку в програмному засобі, за допомогою якого проводять НМТ (далі – сервіс НМТ).<strong> Перевірте</strong>, будь ласка, чи <strong>зазначені </strong>нижче<strong> прізвище, ім’я, по батькові</strong> (за наявності) та <strong>номер Сертифіката збігаються з Вашими</strong>. Якщо ні&nbsp;‒ повідомте про це старшого інструктора.</p>
 
-<p>&nbsp; &nbsp; ПІБ - <b>Прийіа Олександр</b>.<br>
-&nbsp; &nbsp; Номер сертифіката - <b>749326969</b></p>
+<p>&nbsp; &nbsp; ПІБ - <b>{{  displayName }}</b>.<br>
+<!-- &nbsp; &nbsp; Номер сертифіката - <b>749326969</b> -->
+</p>
 
 <p>Ознайомтеся з правилами проходження НМТ та правилами роботи із сервісом НМТ.</p>
 
@@ -85,73 +96,26 @@
                 <div class="agreement-content-control__countdown_timer">
                   <span id="countdownTimer" class="timer"></span>
                 </div>
-                <button id="acceptAgreementButton" class="btn" disabled>З правилами та правами ознайомився/ознайомилася</button>
+                <button id="acceptAgreementButton" :disabled="!agreeTime" class="btn" @click="handleAgree">З правилами та правами ознайомився/ознайомилася</button>
               </div>
             </div>
           </div>
         </div>
-            <!-- <form id="login" class="login-form" tabindex="-1" @submit.prevent>
-                <div class="auth-error" hidden>
-                <h4>Неможливо увійти.</h4>
-                <ul>
-                    <li>Невірно введені логін або пароль.</li>
-                </ul>
-            </div>
-                <h2>Увійти</h2>
-                <div class="form-field text-username">
-                    <label for="login-username">
-                        <span class="label-text">Логін</span>
-
-                        <span id="login-username-required-label" class="label-required ">
-
-                        </span>
-                        <span class="icon fa" id="login-username-validation-icon"></span>
-                    </label>
-                    <input id="login-username" type="text" name="username" 
-                        aria-describedby="login-username-desc login-username-validation-error" minlength="3"
-                        maxlength="254" required="" value="">
-                    <span id="login-username-validation-error" class="tip error" aria-live="assertive">
-                        <span class="sr-only"></span>
-                        <span id="login-username-validation-error-msg">
-                            <ul class="fa-ul"></ul>
-                        </span>
-                    </span>
-                    <span class="tip tip-input" id="login-username-desc">Уведіть логін, отриманий для входу до
-                        системи</span>
-                </div>
-
-                <div class="form-field password-password">
-
-                    <label for="login-password">
-                        <span class="label-text">Пароль</span>
-
-                        <span id="login-password-required-label" class="label-required hidden">
-
-                        </span>
-                        <span class="icon fa" id="login-password-validation-icon" aria-hidden="true"></span>
-
-
-                    </label>
-                    <input id="login-password" type="password" name="password" class="input-block " required=""
-                        value="">
-
-
-                    <span id="login-password-validation-error" class="tip error" aria-live="assertive">
-                        <span class="sr-only"></span>
-                        <span id="login-password-validation-error-msg">
-                            <ul class="fa-ul"></ul>
-                        </span>
-                    </span>
-                </div>
-
-                <button type="submit" class="action action-primary action-update js-login login-button">Увійти</button>
-
-
-
-            </form> -->
-        </div>
+      </div>
     </main>
-   
+    <main v-else class="main">
+      <div class="main__container error">
+        <h2>Помилка: доступ заборонено</h2>
+        <h3>Цей іспит доступний лише за допомогою "Безпечного браузера іспитів"</h3>
+      </div>
+    </main>
+    <div v-if="showLogDialog" class="log-dialog-overlay" @click.self="closeLogDialog">
+  <div class="log-dialog">
+    <h3>Console Logs</h3>
+    <pre>{{ logs.join('\n') }}</pre>
+    <button @click="closeLogDialog">Close</button>
+  </div>
+</div>
 </template>
 <script setup>
 import HeaderLogin from '@/components/nmt/HeaderLogin.vue';
@@ -159,20 +123,40 @@ import { useHead } from '@vueuse/head';
 import { onMounted, ref } from 'vue';
 import "@/assets/nmt/css/style.css"
 import router from '@/router';
-
-const username = ref("")
-const passowrd = ref("")
+const agreeTime = ref(false)
+const agreeAccepted = ref( localStorage.getItem("agreeAccepted"))
+const displayName = ref(sessionStorage.getItem("n_displayName"))
+const accessCode = ref("")
+const isSeb = ref(window.navigator.userAgent.includes("Seb"))
 useHead({
     "title": "НМТ | Авторизація"
 })
 onMounted(() => {
-
-
+    setTimeout(() => {
+        agreeTime.value = true
+    }, 5000
+)
 })
+
+function startExam() {
+  if (accessCode.value == "173") {
+    router.push("/nmt/demo")
+  } else {
+    alert("Невірний код доступу")
+  }
+  
+}
+
+function handleAgree() {
+  localStorage.setItem("agreeAccepted", true)
+    agreeAccepted.value = true
+}
 const testTitle = ref("Demo 2025")
 </script>
 <style scoped>
-
+[hidden] {
+    display: none !important
+}
 form {
     display: flex;
     flex-direction: column;
@@ -206,7 +190,6 @@ h2 {
     overflow: hidden;
 }
 .main {
-    margin-top: 3rem;
     padding-top: 5rem;
     font-family: "Open Sans";
     background-color: white;
@@ -250,13 +233,10 @@ h2 {
 
 
 button{
-    max-width: 7rem;
-font-family: "Open Sans";
+
     font-size: 1.2rem;
     font-weight: 600;
-    line-height: 1.6rem;padding: 1ex 1em;
-    border-radius: 0px !important;
-    box-shadow: inset 0 1px 0 0 #ff3d5c;
+
 }
 .partner-item img {
     border-radius: 9999px;
@@ -267,21 +247,6 @@ font-family: "Open Sans";
 }
 .partner-item:first-child img {
     scale: 1.15
-}
-button {
-    background-color: #E62050 !important;
-    color: white;
-    padding: 4px;
-    border-color:#E62050 !important;
-    border-radius: 4px;
-    border-radius: 0.25rem !important;
-}
-button:disabled {
-    cursor: not-allowed;
-    background-color: #ccc ;
-    box-shadow: none;
-    position: relative !important;
-    overflow: unset !important;
 }
 
 .exam-button {
@@ -369,6 +334,13 @@ button.btn:hover::after {
 }
 .agreement-content-text {
   padding: 40px;
+
+}
+@media (max-width: 768px) {
+  .agreement-content-text {
+  padding: 16px !important;
+
+}
 }
 p + p, ul + p, ol + p {
   margin-top: 20px;
@@ -458,6 +430,50 @@ p + p, ul + p, ol + p {
   justify-content: space-between;
   padding-left: 1rem;
   padding-right: 1rem;
+  width: 100%;
+}
+@media (max-width: 600px) {
+  .exam-item {
+    flex-direction: column;
+    min-width: 100% !important;
+    max-width: 20rem !important; 
+    height: auto;
+  }
+  .exam-item__info {
+    flex-direction: column;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    gap:1rem;
+  }
+  .exam-item__image {
+    width: 100% !important;
+    height: 6rem !important;
+  }
+
+}
+
+.error * {
+  color: black;
+  font-weight: normal;
+    opacity: 1;
+}
+.error h3 {
+  opacity: 0.5
+}
+.error {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 1rem;
+  align-items: center;
+}
+
+.modal-box {
+  max-width: 17rem !important;
+  text-align: center;
+}
+
+.modal-box input {
   width: 100%;
 }
 </style>

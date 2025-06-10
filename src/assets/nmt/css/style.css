@@ -1,12 +1,123 @@
 :root {
-    --nmt: rgb(242, 78, 94)
+    --nmt:#e62050;
 }
+/* :root {
+  --nmt: #343f64 !important;
+} */
 @import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap');
 
 main[nmt] {
     font-family: "Open Sans";
 }
 
-a {
-    background: none !important;
+main[nmt] {
+  padding-top: 0;
 }
+main[nmt] a {
+    background: none ;
+}
+.wrapper {
+    overflow: visible;
+}
+/* *{
+    overflow: auto;
+} */
+
+main[nmt] button:focus:active {
+    border: 1px solid #b40b34;
+  box-shadow: inset 0 0 4px 1px #a40c30,inset 0 0 4px 1px #a40c30;
+}
+main[nmt] button:hover {
+    background: var(--nmt);
+    background-color: rgb(230, 32, 80);
+    background-image: none;
+  box-shadow: inset 0 1px 0 0 #e13f66;
+  cursor: pointer;
+  background-color: #d01d48;
+  background-image: -webkit-linear-gradient(#d01d48,#b30c34);
+  background-image: linear-gradient(#d01d48,#b30c34);
+  transition: color .25s ease-in-out, background .25s ease-in-out, box-shadow .25s ease-in-out;
+  color: #fff;
+  text-shadow: 0 1px 0 #a6042c;
+  border-color: #a6042c;
+  border-radius: 10px !important;
+}
+
+main[nmt] button.submit:hover {
+    border-radius: 10px !important;
+}
+main[nmt] button {
+    border-radius: 10px !important;
+font-family: "Open Sans";
+  border-color:  var(--nmt);
+  background:  var(--nmt);
+  color: #fcfcfc;
+  border-radius: 10px;
+  border: var(--nmt) solid 1px;
+  transition: all;
+  transition: all 0.5s;
+  box-shadow: none;
+}
+main[nmt] button:disabled {
+  border-color: #d2d0d0;
+  background: #f2f3f3;
+  color: #7c7c7c;
+}
+main[nmt] button:disabled:hover {
+    background: #f2f3f3 !important; 
+    background-image: none !important; 
+    box-shadow: none;
+    cursor: not-allowed;
+    text-shadow: none;
+}
+main[nmt] button::after, main[nmt] button::before{
+    display: none !important;
+}
+
+.answer-saved {
+    border-top: solid 3px var(--nmt);
+    display: flex;
+    gap: 0.5rem;
+    color: black !important;
+    margin-top: 1rem;
+    padding-top: 0.5rem;
+    align-items: center;
+  }
+  
+
+  main[nmt] h1,  main[nmt] h2,   main[nmt] h3,   main[nmt] h4,   main[nmt] h5,   main[nmt] h6,   main[nmt] p,   main[nmt] span, main[nmt] div {
+    user-select: none !important;
+  } 
+
+main[nmt]  input[type="text"],main[nmt]  input[type="email"], main[nmt]  input[type="password"] {
+    background: #fff;
+    border: 1px solid #c8c8c8;
+    border-radius: 0;
+    box-shadow: 0 1px 0 0 rgba(255,255,255,0.6),inset 0 0 3px 0 rgba(0,0,0,0.1);
+    box-sizing: border-box;
+    font: normal 1em "Open Sans","Helvetica Neue",Helvetica,Arial,sans-serif;
+    height: 35px;
+    padding: 5px 12px;
+    vertical-align: top;
+    -webkit-font-smoothing: antialiased;
+    border: 2px solid #e4e4e4;
+    box-sizing: border-box;
+  border: 2px solid #e4e4e4;
+  border-radius: 3px;
+  min-width: 160px;
+  height: 46px;
+
+  /* max-width: 160px; */
+  }
+
+  input[type="radio"] {
+    /* padding: 0.5rem;
+    height: 2rem;
+    width: 2rem; */
+  
+  }
+
+  html, body {
+
+    background-color: white !important;
+  }

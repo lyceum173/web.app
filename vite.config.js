@@ -7,7 +7,7 @@ import vueDevTools from 'vite-plugin-vue-devtools'
 // https://vite.dev/config/
 export default defineConfig({
  server: {
-  port: 9099
+  port: 5050
  },
   plugins: [
     vue(),

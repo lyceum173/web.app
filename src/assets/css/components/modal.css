@@ -1,0 +1,1156 @@
+@layer base{
+    :root,:root:has(input.theme-controller[value=light]:checked),[data-theme=light]{
+        color-scheme:light;
+        --color-base-100:oklch(100% 0 0);
+        --color-base-200:oklch(98% 0 0);
+        --color-base-300:oklch(95% 0 0);
+        --color-base-content:oklch(21% .006 285.885);
+        --color-primary:oklch(45% .24 277.023);
+        --color-primary-content:oklch(93% .034 272.788);
+        --color-secondary:oklch(65% .241 354.308);
+        --color-secondary-content:oklch(94% .028 342.258);
+        --color-accent:oklch(77% .152 181.912);
+        --color-accent-content:oklch(38% .063 188.416);
+        --color-neutral:oklch(14% .005 285.823);
+        --color-neutral-content:oklch(92% .004 286.32);
+        --color-info:oklch(74% .16 232.661);
+        --color-info-content:oklch(29% .066 243.157);
+        --color-success:oklch(76% .177 163.223);
+        --color-success-content:oklch(37% .077 168.94);
+        --color-warning:oklch(82% .189 84.429);
+        --color-warning-content:oklch(41% .112 45.904);
+        --color-error:oklch(71% .194 13.428);
+        --color-error-content:oklch(27% .105 12.094);
+        --radius-selector:.5rem;
+        --radius-field:.25rem;
+        --radius-box:.5rem;
+        --size-selector:.25rem;
+        --size-field:.25rem;
+        --border:1px;
+        --depth:1;
+        --noise:0
+    }
+    :root:has(input.theme-controller[value=dark]:checked),[data-theme=dark]{
+        color-scheme:dark;
+        --color-base-100:oklch(25.33% .016 252.42);
+        --color-base-200:oklch(23.26% .014 253.1);
+        --color-base-300:oklch(21.15% .012 254.09);
+        --color-base-content:oklch(97.807% .029 256.847);
+        --color-primary:oklch(58% .233 277.117);
+        --color-primary-content:oklch(96% .018 272.314);
+        --color-secondary:oklch(65% .241 354.308);
+        --color-secondary-content:oklch(94% .028 342.258);
+        --color-accent:oklch(77% .152 181.912);
+        --color-accent-content:oklch(38% .063 188.416);
+        --color-neutral:oklch(14% .005 285.823);
+        --color-neutral-content:oklch(92% .004 286.32);
+        --color-info:oklch(74% .16 232.661);
+        --color-info-content:oklch(29% .066 243.157);
+        --color-success:oklch(76% .177 163.223);
+        --color-success-content:oklch(37% .077 168.94);
+        --color-warning:oklch(82% .189 84.429);
+        --color-warning-content:oklch(41% .112 45.904);
+        --color-error:oklch(71% .194 13.428);
+        --color-error-content:oklch(27% .105 12.094);
+        --radius-selector:.5rem;
+        --radius-field:.25rem;
+        --radius-box:.5rem;
+        --size-selector:.25rem;
+        --size-field:.25rem;
+        --border:1px;
+        --depth:1;
+        --noise:0
+    }
+    :root{
+        scrollbar-color:color-mix(in oklch,currentColor 35%,#0000)#0000;
+        --fx-noise:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='a'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.34' numOctaves='4' stitchTiles='stitch'%3E%3C/feTurbulence%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23a)' opacity='0.2'%3E%3C/rect%3E%3C/svg%3E")
+    }
+
+}
+@layer utilities{
+   
+ .modal{
+        margin: 0px !important;
+        padding: 0px !important;
+        border: none !important;
+
+        pointer-events:none;
+        visibility:hidden;
+        width:100%;
+        max-width:none;
+        height:100%;
+        max-height:none;
+        color:inherit;
+        transition:transform .3s ease-out,visibility .3s allow-discrete,background-color .3s ease-out,opacity .1s ease-out;
+        overscroll-behavior:contain;
+        z-index:999;
+        background-color:#0000;
+        place-items:center;
+        margin:0;
+        padding:0;
+        display:grid;
+        position:fixed;
+        inset:0;
+        overflow:hidden;
+        &::backdrop{
+            display:none
+        }
+        &.modal-open,&[open],&:target{
+            background-color:oklch(0% 0 0/.4);
+            transition:transform .3s ease-out,background-color .3s ease-out,opacity .1s ease-out
+        }
+        &.modal-open,&[open],&:target{
+            pointer-events:auto;
+            visibility:visible;
+            opacity:1;
+            & .modal-box{
+                opacity:1;
+                translate:0;
+                scale:1
+            }
+        }
+        @starting-style{
+            &.modal-open,&[open],&:target{
+                visibility:hidden;
+                opacity:0
+            }
+        }
+    }
+    .modal-action{
+        justify-content:flex-end;
+        gap:.5rem;
+        margin-top:0rem;
+        display:flex
+    }
+    .modal-toggle{
+        appearance:none;
+        opacity:0;
+        width:0;
+        height:0;
+        position:fixed;
+        &:checked+.modal{
+            pointer-events:auto;
+            visibility:visible;
+            opacity:1;
+            background-color:oklch(0% 0 0/.4);
+            & .modal-box{
+                opacity:1;
+                translate:0;
+                scale:1
+            }
+        }
+        @starting-style{
+            &:checked+.modal{
+                visibility:hidden;
+                opacity:0
+            }
+        }
+    }
+    .modal-backdrop{
+        color:#0000;
+        z-index:-1;
+        grid-row-start:1;
+        grid-column-start:1;
+        place-self:stretch stretch;
+        display:grid;
+        & button{
+            cursor:pointer
+        }
+    }
+    .modal-box{
+        background-color: #fdfdfd;
+        color: rgb(0, 0, 0);
+        border-top-left-radius:var(--modal-tl,var(--radius-box));
+        border-top-right-radius:var(--modal-tr,var(--radius-box));
+        border-bottom-left-radius:var(--modal-bl,var(--radius-box));
+        border-bottom-right-radius:var(--modal-br,var(--radius-box));
+        opacity:0;
+        padding: 1rem !important;
+        overscroll-behavior:contain;
+        grid-row-start:1;
+        grid-column-start:1;
+        width:91.6667%;
+        max-width:32rem;
+        max-height:100vh;
+        padding:1rem;
+        transition:translate .3s ease-out,scale .3s ease-out,opacity .2s ease-out 50ms,box-shadow .3s ease-out;
+        overflow-y:auto;
+        scale:95%;
+        box-shadow:0 25px 50px -12px oklch(0% 0 0/.25)
+    }
+    .modal-top{
+        place-items:start;
+        & :where(.modal-box){
+            --modal-tl:0;
+            --modal-tr:0;
+            --modal-bl:var(--radius-box);
+            --modal-br:var(--radius-box);
+            width:100%;
+            max-width:none;
+            height:auto;
+            max-height:calc(100vh - 5em);
+            translate:0 -100%;
+            scale:1
+        }
+    }
+    .modal-middle{
+        place-items:center;
+        & :where(.modal-box){
+            --modal-tl:var(--radius-box);
+            --modal-tr:var(--radius-box);
+            --modal-bl:var(--radius-box);
+            --modal-br:var(--radius-box);
+            width:91.6667%;
+            max-width:32rem;
+            height:auto;
+            max-height:calc(100vh - 5em);
+            translate:0 2%;
+            scale:98%
+        }
+    }
+    .modal-bottom{
+        place-items:end;
+        & :where(.modal-box){
+            --modal-tl:var(--radius-box);
+            --modal-tr:var(--radius-box);
+            --modal-bl:0;
+            --modal-br:0;
+            width:100%;
+            max-width:none;
+            height:auto;
+            max-height:calc(100vh - 5em);
+            translate:0 100%;
+            scale:1
+        }
+    }
+    .modal-start{
+        place-items:start;
+        & :where(.modal-box){
+            --modal-tl:0;
+            --modal-tr:var(--radius-box);
+            --modal-bl:0;
+            --modal-br:var(--radius-box);
+            width:auto;
+            max-width:none;
+            height:100vh;
+            max-height:none;
+            translate:-100%;
+            scale:1
+        }
+    }
+    .modal-end{
+        place-items:end;
+        & :where(.modal-box){
+            --modal-tl:var(--radius-box);
+            --modal-tr:0;
+            --modal-bl:var(--radius-box);
+            --modal-br:0;
+            width:auto;
+            max-width:none;
+            height:100vh;
+            max-height:none;
+            translate:100%;
+            scale:1
+        }
+    }
+    @media (width>=640px){
+        .sm\:modal{
+            pointer-events:none;
+            visibility:hidden;
+            width:100%;
+            max-width:none;
+            height:100%;
+            max-height:none;
+            color:inherit;
+            transition:transform .3s ease-out,visibility .3s allow-discrete,background-color .3s ease-out,opacity .1s ease-out;
+            overscroll-behavior:contain;
+            z-index:999;
+            background-color:#0000;
+            place-items:center;
+            margin:0;
+            padding:0;
+            display:grid;
+            position:fixed;
+            inset:0;
+            overflow:hidden;
+            &::backdrop{
+                display:none
+            }
+            &.modal-open,&[open],&:target{
+                background-color:oklch(0% 0 0/.4);
+                transition:transform .3s ease-out,background-color .3s ease-out,opacity .1s ease-out
+            }
+            &.modal-open,&[open],&:target{
+                pointer-events:auto;
+                visibility:visible;
+                opacity:1;
+                & .modal-box{
+                    opacity:1;
+                    translate:0;
+                    scale:1
+                }
+            }
+            @starting-style{
+                &.modal-open,&[open],&:target{
+                    visibility:hidden;
+                    opacity:0
+                }
+            }
+        }
+        .sm\:modal-action{
+            justify-content:flex-end;
+            gap:.5rem;
+            margin-top:1.5rem;
+            display:flex
+        }
+        .sm\:modal-toggle{
+            appearance:none;
+            opacity:0;
+            width:0;
+            height:0;
+            position:fixed;
+            &:checked+.modal{
+                pointer-events:auto;
+                visibility:visible;
+                opacity:1;
+                background-color:oklch(0% 0 0/.4);
+                & .modal-box{
+                    opacity:1;
+                    translate:0;
+                    scale:1
+                }
+            }
+            @starting-style{
+                &:checked+.modal{
+                    visibility:hidden;
+                    opacity:0
+                }
+            }
+        }
+        .sm\:modal-backdrop{
+            color:#0000;
+            z-index:-1;
+            grid-row-start:1;
+            grid-column-start:1;
+            place-self:stretch stretch;
+            display:grid;
+            & button{
+                cursor:pointer
+            }
+        }
+        .sm\:modal-box{
+            background-color:var(--color-base-100);
+            border-top-left-radius:var(--modal-tl,var(--radius-box));
+            border-top-right-radius:var(--modal-tr,var(--radius-box));
+            border-bottom-left-radius:var(--modal-bl,var(--radius-box));
+            border-bottom-right-radius:var(--modal-br,var(--radius-box));
+            opacity:0;
+            overscroll-behavior:contain;
+            grid-row-start:1;
+            grid-column-start:1;
+            width:91.6667%;
+            max-width:32rem;
+            max-height:100vh;
+            padding:1.5rem;
+            transition:translate .3s ease-out,scale .3s ease-out,opacity .2s ease-out 50ms,box-shadow .3s ease-out;
+            overflow-y:auto;
+            scale:95%;
+            box-shadow:0 25px 50px -12px oklch(0% 0 0/.25)
+        }
+        .sm\:modal-top{
+            place-items:start;
+            & :where(.modal-box){
+                --modal-tl:0;
+                --modal-tr:0;
+                --modal-bl:var(--radius-box);
+                --modal-br:var(--radius-box);
+                width:100%;
+                max-width:none;
+                height:auto;
+                max-height:calc(100vh - 5em);
+                translate:0 -100%;
+                scale:1
+            }
+        }
+        .sm\:modal-middle{
+            place-items:center;
+            & :where(.modal-box){
+                --modal-tl:var(--radius-box);
+                --modal-tr:var(--radius-box);
+                --modal-bl:var(--radius-box);
+                --modal-br:var(--radius-box);
+                width:91.6667%;
+                max-width:32rem;
+                height:auto;
+                max-height:calc(100vh - 5em);
+                translate:0 2%;
+                scale:98%
+            }
+        }
+        .sm\:modal-bottom{
+            place-items:end;
+            & :where(.modal-box){
+                --modal-tl:var(--radius-box);
+                --modal-tr:var(--radius-box);
+                --modal-bl:0;
+                --modal-br:0;
+                width:100%;
+                max-width:none;
+                height:auto;
+                max-height:calc(100vh - 5em);
+                translate:0 100%;
+                scale:1
+            }
+        }
+        .sm\:modal-start{
+            place-items:start;
+            & :where(.modal-box){
+                --modal-tl:0;
+                --modal-tr:var(--radius-box);
+                --modal-bl:0;
+                --modal-br:var(--radius-box);
+                width:auto;
+                max-width:none;
+                height:100vh;
+                max-height:none;
+                translate:-100%;
+                scale:1
+            }
+        }
+        .sm\:modal-end{
+            place-items:end;
+            & :where(.modal-box){
+                --modal-tl:var(--radius-box);
+                --modal-tr:0;
+                --modal-bl:var(--radius-box);
+                --modal-br:0;
+                width:auto;
+                max-width:none;
+                height:100vh;
+                max-height:none;
+                translate:100%;
+                scale:1
+            }
+        }
+    }
+    @media (width>=768px){
+        .md\:modal{
+            pointer-events:none;
+            visibility:hidden;
+            width:100%;
+            max-width:none;
+            height:100%;
+            max-height:none;
+            color:inherit;
+            transition:transform .3s ease-out,visibility .3s allow-discrete,background-color .3s ease-out,opacity .1s ease-out;
+            overscroll-behavior:contain;
+            z-index:999;
+            background-color:#0000;
+            place-items:center;
+            margin:0;
+            padding:0;
+            display:grid;
+            position:fixed;
+            inset:0;
+            overflow:hidden;
+            &::backdrop{
+                display:none
+            }
+            &.modal-open,&[open],&:target{
+                background-color:oklch(0% 0 0/.4);
+                transition:transform .3s ease-out,background-color .3s ease-out,opacity .1s ease-out
+            }
+            &.modal-open,&[open],&:target{
+                pointer-events:auto;
+                visibility:visible;
+                opacity:1;
+                & .modal-box{
+                    opacity:1;
+                    translate:0;
+                    scale:1
+                }
+            }
+            @starting-style{
+                &.modal-open,&[open],&:target{
+                    visibility:hidden;
+                    opacity:0
+                }
+            }
+        }
+        .md\:modal-action{
+            justify-content:flex-end;
+            gap:.5rem;
+            margin-top:1.5rem;
+            display:flex
+        }
+        .md\:modal-toggle{
+            appearance:none;
+            opacity:0;
+            width:0;
+            height:0;
+            position:fixed;
+            &:checked+.modal{
+                pointer-events:auto;
+                visibility:visible;
+                opacity:1;
+                background-color:oklch(0% 0 0/.4);
+                & .modal-box{
+                    opacity:1;
+                    translate:0;
+                    scale:1
+                }
+            }
+            @starting-style{
+                &:checked+.modal{
+                    visibility:hidden;
+                    opacity:0
+                }
+            }
+        }
+        .md\:modal-backdrop{
+            color:#0000;
+            z-index:-1;
+            grid-row-start:1;
+            grid-column-start:1;
+            place-self:stretch stretch;
+            display:grid;
+            & button{
+                cursor:pointer
+            }
+        }
+        .md\:modal-box{
+            background-color:var(--color-base-100);
+            border-top-left-radius:var(--modal-tl,var(--radius-box));
+            border-top-right-radius:var(--modal-tr,var(--radius-box));
+            border-bottom-left-radius:var(--modal-bl,var(--radius-box));
+            border-bottom-right-radius:var(--modal-br,var(--radius-box));
+            opacity:0;
+            overscroll-behavior:contain;
+            grid-row-start:1;
+            grid-column-start:1;
+            width:91.6667%;
+            max-width:32rem;
+            max-height:100vh;
+            padding:1.5rem;
+            transition:translate .3s ease-out,scale .3s ease-out,opacity .2s ease-out 50ms,box-shadow .3s ease-out;
+            overflow-y:auto;
+            scale:95%;
+            box-shadow:0 25px 50px -12px oklch(0% 0 0/.25)
+        }
+        .md\:modal-top{
+            place-items:start;
+            & :where(.modal-box){
+                --modal-tl:0;
+                --modal-tr:0;
+                --modal-bl:var(--radius-box);
+                --modal-br:var(--radius-box);
+                width:100%;
+                max-width:none;
+                height:auto;
+                max-height:calc(100vh - 5em);
+                translate:0 -100%;
+                scale:1
+            }
+        }
+        .md\:modal-middle{
+            place-items:center;
+            & :where(.modal-box){
+                --modal-tl:var(--radius-box);
+                --modal-tr:var(--radius-box);
+                --modal-bl:var(--radius-box);
+                --modal-br:var(--radius-box);
+                width:91.6667%;
+                max-width:32rem;
+                height:auto;
+                max-height:calc(100vh - 5em);
+                translate:0 2%;
+                scale:98%
+            }
+        }
+        .md\:modal-bottom{
+            place-items:end;
+            & :where(.modal-box){
+                --modal-tl:var(--radius-box);
+                --modal-tr:var(--radius-box);
+                --modal-bl:0;
+                --modal-br:0;
+                width:100%;
+                max-width:none;
+                height:auto;
+                max-height:calc(100vh - 5em);
+                translate:0 100%;
+                scale:1
+            }
+        }
+        .md\:modal-start{
+            place-items:start;
+            & :where(.modal-box){
+                --modal-tl:0;
+                --modal-tr:var(--radius-box);
+                --modal-bl:0;
+                --modal-br:var(--radius-box);
+                width:auto;
+                max-width:none;
+                height:100vh;
+                max-height:none;
+                translate:-100%;
+                scale:1
+            }
+        }
+        .md\:modal-end{
+            place-items:end;
+            & :where(.modal-box){
+                --modal-tl:var(--radius-box);
+                --modal-tr:0;
+                --modal-bl:var(--radius-box);
+                --modal-br:0;
+                width:auto;
+                max-width:none;
+                height:100vh;
+                max-height:none;
+                translate:100%;
+                scale:1
+            }
+        }
+    }
+    @media (width>=1024px){
+        .lg\:modal{
+            pointer-events:none;
+            visibility:hidden;
+            width:100%;
+            max-width:none;
+            height:100%;
+            max-height:none;
+            color:inherit;
+            transition:transform .3s ease-out,visibility .3s allow-discrete,background-color .3s ease-out,opacity .1s ease-out;
+            overscroll-behavior:contain;
+            z-index:999;
+            background-color:#0000;
+            place-items:center;
+            margin:0;
+            padding:0;
+            display:grid;
+            position:fixed;
+            inset:0;
+            overflow:hidden;
+            &::backdrop{
+                display:none
+            }
+            &.modal-open,&[open],&:target{
+                background-color:oklch(0% 0 0/.4);
+                transition:transform .3s ease-out,background-color .3s ease-out,opacity .1s ease-out
+            }
+            &.modal-open,&[open],&:target{
+                pointer-events:auto;
+                visibility:visible;
+                opacity:1;
+                & .modal-box{
+                    opacity:1;
+                    translate:0;
+                    scale:1
+                }
+            }
+            @starting-style{
+                &.modal-open,&[open],&:target{
+                    visibility:hidden;
+                    opacity:0
+                }
+            }
+        }
+        .lg\:modal-action{
+            justify-content:flex-end;
+            gap:.5rem;
+            margin-top:1.5rem;
+            display:flex
+        }
+        .lg\:modal-toggle{
+            appearance:none;
+            opacity:0;
+            width:0;
+            height:0;
+            position:fixed;
+            &:checked+.modal{
+                pointer-events:auto;
+                visibility:visible;
+                opacity:1;
+                background-color:oklch(0% 0 0/.4);
+                & .modal-box{
+                    opacity:1;
+                    translate:0;
+                    scale:1
+                }
+            }
+            @starting-style{
+                &:checked+.modal{
+                    visibility:hidden;
+                    opacity:0
+                }
+            }
+        }
+        .lg\:modal-backdrop{
+            color:#0000;
+            z-index:-1;
+            grid-row-start:1;
+            grid-column-start:1;
+            place-self:stretch stretch;
+            display:grid;
+            & button{
+                cursor:pointer
+            }
+        }
+        .lg\:modal-box{
+            background-color:var(--color-base-100);
+            border-top-left-radius:var(--modal-tl,var(--radius-box));
+            border-top-right-radius:var(--modal-tr,var(--radius-box));
+            border-bottom-left-radius:var(--modal-bl,var(--radius-box));
+            border-bottom-right-radius:var(--modal-br,var(--radius-box));
+            opacity:0;
+            overscroll-behavior:contain;
+            grid-row-start:1;
+            grid-column-start:1;
+            width:91.6667%;
+            max-width:32rem;
+            max-height:100vh;
+            padding:1.5rem;
+            transition:translate .3s ease-out,scale .3s ease-out,opacity .2s ease-out 50ms,box-shadow .3s ease-out;
+            overflow-y:auto;
+            scale:95%;
+            box-shadow:0 25px 50px -12px oklch(0% 0 0/.25)
+        }
+        .lg\:modal-top{
+            place-items:start;
+            & :where(.modal-box){
+                --modal-tl:0;
+                --modal-tr:0;
+                --modal-bl:var(--radius-box);
+                --modal-br:var(--radius-box);
+                width:100%;
+                max-width:none;
+                height:auto;
+                max-height:calc(100vh - 5em);
+                translate:0 -100%;
+                scale:1
+            }
+        }
+        .lg\:modal-middle{
+            place-items:center;
+            & :where(.modal-box){
+                --modal-tl:var(--radius-box);
+                --modal-tr:var(--radius-box);
+                --modal-bl:var(--radius-box);
+                --modal-br:var(--radius-box);
+                width:91.6667%;
+                max-width:32rem;
+                height:auto;
+                max-height:calc(100vh - 5em);
+                translate:0 2%;
+                scale:98%
+            }
+        }
+        .lg\:modal-bottom{
+            place-items:end;
+            & :where(.modal-box){
+                --modal-tl:var(--radius-box);
+                --modal-tr:var(--radius-box);
+                --modal-bl:0;
+                --modal-br:0;
+                width:100%;
+                max-width:none;
+                height:auto;
+                max-height:calc(100vh - 5em);
+                translate:0 100%;
+                scale:1
+            }
+        }
+        .lg\:modal-start{
+            place-items:start;
+            & :where(.modal-box){
+                --modal-tl:0;
+                --modal-tr:var(--radius-box);
+                --modal-bl:0;
+                --modal-br:var(--radius-box);
+                width:auto;
+                max-width:none;
+                height:100vh;
+                max-height:none;
+                translate:-100%;
+                scale:1
+            }
+        }
+        .lg\:modal-end{
+            place-items:end;
+            & :where(.modal-box){
+                --modal-tl:var(--radius-box);
+                --modal-tr:0;
+                --modal-bl:var(--radius-box);
+                --modal-br:0;
+                width:auto;
+                max-width:none;
+                height:100vh;
+                max-height:none;
+                translate:100%;
+                scale:1
+            }
+        }
+    }
+    @media (width>=1280px){
+        .xl\:modal{
+            pointer-events:none;
+            visibility:hidden;
+            width:100%;
+            max-width:none;
+            height:100%;
+            max-height:none;
+            color:inherit;
+            transition:transform .3s ease-out,visibility .3s allow-discrete,background-color .3s ease-out,opacity .1s ease-out;
+            overscroll-behavior:contain;
+            z-index:999;
+            background-color:#0000;
+            place-items:center;
+            margin:0;
+            padding:0;
+            display:grid;
+            position:fixed;
+            inset:0;
+            overflow:hidden;
+            &::backdrop{
+                display:none
+            }
+            &.modal-open,&[open],&:target{
+                background-color:oklch(0% 0 0/.4);
+                transition:transform .3s ease-out,background-color .3s ease-out,opacity .1s ease-out
+            }
+            &.modal-open,&[open],&:target{
+                pointer-events:auto;
+                visibility:visible;
+                opacity:1;
+                & .modal-box{
+                    opacity:1;
+                    translate:0;
+                    scale:1
+                }
+            }
+            @starting-style{
+                &.modal-open,&[open],&:target{
+                    visibility:hidden;
+                    opacity:0
+                }
+            }
+        }
+        .xl\:modal-action{
+            justify-content:flex-end;
+            gap:.5rem;
+            margin-top:1.5rem;
+            display:flex
+        }
+        .xl\:modal-toggle{
+            appearance:none;
+            opacity:0;
+            width:0;
+            height:0;
+            position:fixed;
+            &:checked+.modal{
+                pointer-events:auto;
+                visibility:visible;
+                opacity:1;
+                background-color:oklch(0% 0 0/.4);
+                & .modal-box{
+                    opacity:1;
+                    translate:0;
+                    scale:1
+                }
+            }
+            @starting-style{
+                &:checked+.modal{
+                    visibility:hidden;
+                    opacity:0
+                }
+            }
+        }
+        .xl\:modal-backdrop{
+            color:#0000;
+            z-index:-1;
+            grid-row-start:1;
+            grid-column-start:1;
+            place-self:stretch stretch;
+            display:grid;
+            & button{
+                cursor:pointer
+            }
+        }
+        .xl\:modal-box{
+            background-color:var(--color-base-100);
+            border-top-left-radius:var(--modal-tl,var(--radius-box));
+            border-top-right-radius:var(--modal-tr,var(--radius-box));
+            border-bottom-left-radius:var(--modal-bl,var(--radius-box));
+            border-bottom-right-radius:var(--modal-br,var(--radius-box));
+            opacity:0;
+            overscroll-behavior:contain;
+            grid-row-start:1;
+            grid-column-start:1;
+            width:91.6667%;
+            max-width:32rem;
+            max-height:100vh;
+            padding:1.5rem;
+            transition:translate .3s ease-out,scale .3s ease-out,opacity .2s ease-out 50ms,box-shadow .3s ease-out;
+            overflow-y:auto;
+            scale:95%;
+            box-shadow:0 25px 50px -12px oklch(0% 0 0/.25)
+        }
+        .xl\:modal-top{
+            place-items:start;
+            & :where(.modal-box){
+                --modal-tl:0;
+                --modal-tr:0;
+                --modal-bl:var(--radius-box);
+                --modal-br:var(--radius-box);
+                width:100%;
+                max-width:none;
+                height:auto;
+                max-height:calc(100vh - 5em);
+                translate:0 -100%;
+                scale:1
+            }
+        }
+        .xl\:modal-middle{
+            place-items:center;
+            & :where(.modal-box){
+                --modal-tl:var(--radius-box);
+                --modal-tr:var(--radius-box);
+                --modal-bl:var(--radius-box);
+                --modal-br:var(--radius-box);
+                width:91.6667%;
+                max-width:32rem;
+                height:auto;
+                max-height:calc(100vh - 5em);
+                translate:0 2%;
+                scale:98%
+            }
+        }
+        .xl\:modal-bottom{
+            place-items:end;
+            & :where(.modal-box){
+                --modal-tl:var(--radius-box);
+                --modal-tr:var(--radius-box);
+                --modal-bl:0;
+                --modal-br:0;
+                width:100%;
+                max-width:none;
+                height:auto;
+                max-height:calc(100vh - 5em);
+                translate:0 100%;
+                scale:1
+            }
+        }
+        .xl\:modal-start{
+            place-items:start;
+            & :where(.modal-box){
+                --modal-tl:0;
+                --modal-tr:var(--radius-box);
+                --modal-bl:0;
+                --modal-br:var(--radius-box);
+                width:auto;
+                max-width:none;
+                height:100vh;
+                max-height:none;
+                translate:-100%;
+                scale:1
+            }
+        }
+        .xl\:modal-end{
+            place-items:end;
+            & :where(.modal-box){
+                --modal-tl:var(--radius-box);
+                --modal-tr:0;
+                --modal-bl:var(--radius-box);
+                --modal-br:0;
+                width:auto;
+                max-width:none;
+                height:100vh;
+                max-height:none;
+                translate:100%;
+                scale:1
+            }
+        }
+    }
+    @media (width>=1536px){
+        .\32 xl\:modal{
+            pointer-events:none;
+            visibility:hidden;
+            width:100%;
+            max-width:none;
+            height:100%;
+            max-height:none;
+            color:inherit;
+            transition:transform .3s ease-out,visibility .3s allow-discrete,background-color .3s ease-out,opacity .1s ease-out;
+            overscroll-behavior:contain;
+            z-index:999;
+            background-color:#0000;
+            place-items:center;
+            margin:0;
+            padding:0;
+            display:grid;
+            position:fixed;
+            inset:0;
+            overflow:hidden;
+            &::backdrop{
+                display:none
+            }
+            &.modal-open,&[open],&:target{
+                background-color:oklch(0% 0 0/.4);
+                transition:transform .3s ease-out,background-color .3s ease-out,opacity .1s ease-out
+            }
+            &.modal-open,&[open],&:target{
+                pointer-events:auto;
+                visibility:visible;
+                opacity:1;
+                & .modal-box{
+                    opacity:1;
+                    translate:0;
+                    scale:1
+                }
+            }
+            @starting-style{
+                &.modal-open,&[open],&:target{
+                    visibility:hidden;
+                    opacity:0
+                }
+            }
+        }
+        .\32 xl\:modal-action{
+            justify-content:flex-end;
+            gap:.5rem;
+            margin-top:1.5rem;
+            display:flex
+        }
+        .\32 xl\:modal-toggle{
+            appearance:none;
+            opacity:0;
+            width:0;
+            height:0;
+            position:fixed;
+            &:checked+.modal{
+                pointer-events:auto;
+                visibility:visible;
+                opacity:1;
+                background-color:oklch(0% 0 0/.4);
+                & .modal-box{
+                    opacity:1;
+                    translate:0;
+                    scale:1
+                }
+            }
+            @starting-style{
+                &:checked+.modal{
+                    visibility:hidden;
+                    opacity:0
+                }
+            }
+        }
+        .\32 xl\:modal-backdrop{
+            color:#0000;
+            z-index:-1;
+            grid-row-start:1;
+            grid-column-start:1;
+            place-self:stretch stretch;
+            display:grid;
+            & button{
+                cursor:pointer
+            }
+        }
+        .\32 xl\:modal-box{
+            background-color:var(--color-base-100);
+            border-top-left-radius:var(--modal-tl,var(--radius-box));
+            border-top-right-radius:var(--modal-tr,var(--radius-box));
+            border-bottom-left-radius:var(--modal-bl,var(--radius-box));
+            border-bottom-right-radius:var(--modal-br,var(--radius-box));
+            opacity:0;
+            overscroll-behavior:contain;
+            grid-row-start:1;
+            grid-column-start:1;
+            width:91.6667%;
+            max-width:32rem;
+            max-height:100vh;
+            padding:1.5rem;
+            transition:translate .3s ease-out,scale .3s ease-out,opacity .2s ease-out 50ms,box-shadow .3s ease-out;
+            overflow-y:auto;
+            scale:95%;
+            box-shadow:0 25px 50px -12px oklch(0% 0 0/.25)
+        }
+        .\32 xl\:modal-top{
+            place-items:start;
+            & :where(.modal-box){
+                --modal-tl:0;
+                --modal-tr:0;
+                --modal-bl:var(--radius-box);
+                --modal-br:var(--radius-box);
+                width:100%;
+                max-width:none;
+                height:auto;
+                max-height:calc(100vh - 5em);
+                translate:0 -100%;
+                scale:1
+            }
+        }
+        .\32 xl\:modal-middle{
+            place-items:center;
+            & :where(.modal-box){
+                --modal-tl:var(--radius-box);
+                --modal-tr:var(--radius-box);
+                --modal-bl:var(--radius-box);
+                --modal-br:var(--radius-box);
+                width:91.6667%;
+                max-width:32rem;
+                height:auto;
+                max-height:calc(100vh - 5em);
+                translate:0 2%;
+                scale:98%
+            }
+        }
+        .\32 xl\:modal-bottom{
+            place-items:end;
+            & :where(.modal-box){
+                --modal-tl:var(--radius-box);
+                --modal-tr:var(--radius-box);
+                --modal-bl:0;
+                --modal-br:0;
+                width:100%;
+                max-width:none;
+                height:auto;
+                max-height:calc(100vh - 5em);
+                translate:0 100%;
+                scale:1
+            }
+        }
+        .\32 xl\:modal-start{
+            place-items:start;
+            & :where(.modal-box){
+                --modal-tl:0;
+                --modal-tr:var(--radius-box);
+                --modal-bl:0;
+                --modal-br:var(--radius-box);
+                width:auto;
+                max-width:none;
+                height:100vh;
+                max-height:none;
+                translate:-100%;
+                scale:1
+            }
+        }
+        .\32 xl\:modal-end{
+            place-items:end;
+            & :where(.modal-box){
+                --modal-tl:var(--radius-box);
+                --modal-tr:0;
+                --modal-bl:var(--radius-box);
+                --modal-br:0;
+                width:auto;
+                max-width:none;
+                height:100vh;
+                max-height:none;
+                translate:100%;
+                scale:1
+            }
+        }
+    }
+}

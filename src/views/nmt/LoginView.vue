@@ -1,6 +1,6 @@
 <template>
-    <HeaderLogin></HeaderLogin>
-    <main class="main">
+    <HeaderLogin relative></HeaderLogin>
+    <main  v-if="isSeb" class="main">
         <div class="main__container">
 
             <form id="login" class="login-form" tabindex="-1" @submit.prevent>
@@ -67,6 +67,12 @@
             </form>
         </div>
     </main>
+    <main v-else class="main">
+      <div class="main__container seb-error">
+        <h2>Помилка: доступ заборонено</h2>
+        <h3>Цей іспит доступний лише за допомогою "Безпечного браузера іспитів"</h3>
+      </div>
+    </main>
     <footer class="footer">
         <div class="footer__container">
             <h2>СТВОРЕНО ЗА ПІДТРИМКИ</h2>
@@ -83,13 +89,7 @@
             </div>
         </div>
     </footer>
-    <div v-if="showLogDialog" class="log-dialog-overlay" @click.self="closeLogDialog">
-  <div class="log-dialog">
-    <h3>Console Logs</h3>
-    <pre>{{ logs.join('\n') }}</pre>
-    <button @click="closeLogDialog">Close</button>
-  </div>
-</div>
+  
 
 </template>
 <script setup>
@@ -98,49 +98,30 @@ import { useHead } from '@vueuse/head';
 import { onMounted, ref } from 'vue';
 import "@/assets/nmt/css/style.css"
 import router from '@/router';
-
+const isSeb = ref(window.navigator.userAgent.includes("Seb"))
 const username = ref("")
 const password = ref("")
 useHead({
     "title": "НМТ | Авторизація"
 })
 
-const showLogDialog = ref(false);
+
+
+
+// Override console methods
+
+
+
 
 // Keyboard shortcut: Cmd+L or Ctrl+L
-onMounted(() => {
-  window.addEventListener("keydown", (e) => {
-    if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "l") {
-      e.preventDefault();
-      if (prompt("Auth Code") === "log092n") {
-        showLogDialog.value = true;
-      }
-      
-    }
-  });
-});
-
-function closeLogDialog() {
-  showLogDialog.value = false;
-}
 
 
 function error(message) {
     document.querySelector(".auth-error").removeAttribute("hidden")
 }
-const logs = ref([]);
+
 onMounted(() => {
-const originalLog = console.log;
-console.log = function(...args) {
-  logs.value.push(args.join(' ')); // Save the log
-  originalLog.apply(console, args); // Show it as usual
-};
 
-// Example logs
-console.log("Hello World");
-console.log("Another log");
-
-// Function to download logs
 
     console.log(window.navigator.userAgent)
     const login_el = document.getElementById("login-username")
@@ -148,10 +129,12 @@ console.log("Another log");
         const password_el = document.getElementById("login-password")
     document.getElementById("login").addEventListener("submit", () => {
     
-       if (username.value === "tst2195") {
-        if (password.value === "tn71p8") {
-            console.log("authed for demo")
-        
+       if (username.value === "tst173") {
+        if (password.value === "tst173") {
+            sessionStorage.setItem("n_displayName", "Тестовий користувач")
+           router.push("/nmt/dashboard/")
+        } else {
+            error("gds")
         }
        } else {
          document.querySelector(".auth-error").setAttribute("hidden", true)
@@ -212,7 +195,7 @@ h2 {
     overflow: hidden;
 }
 .main {
-    margin-top: 3rem;
+
     font-family: "Open Sans";
     background-color: white;
 }
@@ -285,7 +268,9 @@ h2 {
   padding: 1rem;
   border-radius: 6px;
 }
-
+label {
+    font-weight: bold;
+}
 
 button{
     max-width: 7rem;
@@ -329,6 +314,22 @@ button::before {
 .auth-error h4{
     color: #A0060E;
     margin-bottom: 0.5rem !important;
+}
 
+.seb-error * {
+  color: black;
+  font-weight: normal;
+    opacity: 1;
+}
+.seb-error h3 {
+  opacity: 0.5
+}
+.seb-error {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 4rem;
+  align-items: center;
 }
 </style>

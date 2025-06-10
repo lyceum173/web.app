@@ -2,5 +2,7 @@
 import { RouterLink, RouterView } from 'vue-router'
 </script>
 <template>
-  <RouterView />
+  <transition>
+    <RouterView />
+  </transition>
 </template>
