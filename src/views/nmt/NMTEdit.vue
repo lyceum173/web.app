@@ -279,31 +279,6 @@
     </symbol>
   </svg>
   <HeaderLogin relative></HeaderLogin>
-  <br>
-  <div class="nmt-header">
-      <div class="nmt-header__content">
-        <p id="nmt-head-text" v-show="!hideDescription">
-          <span class="nmt-title" data-title>Національний мультипредметний тест</span> обмежений у часі. Таймер праворуч показує, скільки хвилин
-          залишилося до кінця роботи. Вибравши відповідь на завдання, не забудьте натиснути на "Зберегти відповідь" для
-          кожного завдання. Якщо Ви цього не зробите, відповідь не буде збережено і зараховано. Перш ніж натиснути на
-          "Завершити роботу над тестом", перевірте, чи зберегли всі надані відповіді.
-           <button class="a" id="toggle-description" :hidden="hideDescription" @click="hideDescription = !hideDescription">
-          {{ hideDescription ? "Показати" : "Сховати" }}
-        </button>
-        </p>
-        <button class="a" id="toggle-description" :hidden="!hideDescription"  @click="hideDescription = !hideDescription">
-          {{ hideDescription ? "Показати" : "Сховати" }}
-        </button>
-        <br>
-        <div class="nmt-header__actions">
-          <button @click="finishTest()">Завершити роботу над тестом</button>
-          <div class="timer-container">
-            <div class="timer" id="timer"><span id="time"></span></div>
-            <button @click="toggleTimer()" class="hide-timer"><i class="hgi hgi-stroke hgi-view-off-slash"></i></button>
-          </div>
-        </div>
-      </div>
-    </div>
   <TabsComponent :sub=subjectsArray></TabsComponent>
   <main class="main" nmt>
     <div class="main__container">
@@ -431,16 +406,6 @@
                   </td>
                 </tr>
               </tbody>
-              <tbody v-if="block.t == 'dd'">
-                <tr>
-                  <td
-                    style="padding: 10px;  border: 1px solid #c8c8c8; width: 100%; border-color: #e6e6e6; background-color: #fafafa; text-align: center;">
-                    <span style="font-size: 14.0pt; font-weight:bold;">
-                      <b>У завданнях {{ getTaskRange("dd") }} до кожного фрагмента інформації доберіть із випадного списку один правильний, на Вашу думку, варіант відповіді. Ви можете замінити вибраний варіант відповіді на інший. Після остаточного вибору ЗБЕРЕЖІТЬ відповідь, натиснувши курсором на кнопку під завданням.</b>
-                    </span>
-                  </td>
-                </tr>
-              </tbody>
 
 
               <tbody v-if="block.t == 'sh'">
@@ -463,12 +428,10 @@
                 <h3>Завдання {{flatQuestions.find(q => q.q === question.q && q.t === question.t)?.globalIndex + 1}}
                 </h3>
                 <p class="q-hash" v-html="String(md([activeTestIndex, qIndex].join('-'))).slice(6)"></p>
-                <div v-html="formatText(question.q)"></div>
+                <div>{{ question.q }}</div>
                 <br />
                 <pre v-if="devMode" class="dev">{{ question }}</pre>
-                <img :src="question.i" alt="">
                 <div class="watermark" style="width: 260px; top: -160px;">92dcc 5831a 92dcc 5831a 92dcc 5831a </div>
-
                 <SingleAnswerComponent v-if="question.t === 's'" :data="question.a" :savedAnswers="question.savedAnswer"
                   v-model="question.current"
                   @update="match => handleSingleUpdate(match, flatQuestions.find(q => q.q === question.q && q.t === question.t)?.globalIndex)" />
@@ -484,10 +447,6 @@
                 <ShortAnswerComponent v-else-if="question.t === 'sh'" :data="question.a"
                   :savedAnswers="question.savedAnswer" v-model="question.current"
                   @update="match => handleSingleUpdate(match, flatQuestions.find(q => q.q === question.q && q.t === question.t)?.globalIndex)" />
-
-               
-                  <DropDowns  v-else-if="question.t === 'dd'" :question="question"  :data="question.a"
-                  :savedAnswers="[]" v-model="question.current" ></DropDowns>
 
                 <button v-if="question.t === 'st'" class="submit" :disabled="validSet(question)"
                   @click="saveAnswers(flatQuestions.find(q => q.q === question.q && q.t === question.t)?.globalIndex)">
@@ -511,7 +470,7 @@
                       fill="var(--nmt)">
                     </path>
                   </svg>
-                  <p>Відповідь збережено {{ getRelativeTime(question.savedTime) }}</p>
+                  <p>Відповідь збережено {{ getRelativeTime(question.savedAt) }}</p>
                 </div>
                 <div v-if="question.warn && question.t==='m'" class="answer-saved warn" style="margin-top: 1rem !important">
                   
@@ -579,18 +538,6 @@
         </div>
       </div>
     </div>
-    <dialog id="confirm" class="modal">
-  <div class="modal-box">
-    <h3 class="text-lg font-bold">Ви впевнені?</h3>
-    <p class="py-4">Ви хочете завершити роботу над тестом? Ця дія не може бути скасована.</p>
-    <div class="modal-action">
-      <form method="dialog">
-        <button class="btn btn-primary" id="confirm-submit">Підтвердити</button>
-        <button class="btn" id="confirm-cancel">Скасувати</button>
-      </form>
-    </div>
-  </div>
-</dialog>
   </main>
   <br>
   <footer class="wrapper wrapper-footer">
@@ -602,7 +549,6 @@
       </div>
     </div>
   </footer>
-
 </template>
 <script setup>
 import { ref, reactive, computed, onMounted, onBeforeUnmount, watch, nextTick } from 'vue'
@@ -612,8 +558,6 @@ import DragNDropComponent from './questions/DragNDropComponent.vue'
 import SingleAnswerComponent from './questions/SingleAnswerComponent.vue'
 import ShortAnswerComponent from './questions/ShortAnswerComponent.vue'
 import MultipleAnswersComponent from './questions/MultipleAnswersComponent.vue'
-import DropDowns from './questions/DropDowns.vue'
-import { formatAnswerText, formatText } from '@/assets/js/format'
 import { useHead } from '@vueuse/head'
 import('https://cdn.jsdelivr.net/npm/@thumbmarkjs/thumbmarkjs/dist/thumbmark.umd.js')
   .then(() => {
@@ -627,15 +571,13 @@ const examBlockTitle = ref("НМТ")
 const STORAGE_KEY = btoa('saved-questions')
 const blockLoaded = ref(false)
 const globalQCounter = ref(0)
-const hideDescription = ref(false)
 const blocksQuestions = ref([
   [{
     t: "s",
     questions: [
-      { q: "Яка подія відбулася в 1569 р.?", a: ["заснування першої Запорозької Січі на о. Мала Хортиця", "похід козаків під проводом П. Сагайдачного на Московське царство", "об’єднання Великого князівства Литовського та Польського королівства", "укладення козацького реєстру польським королем Стефаном Баторієм"] },
-      { q: "Географічні **назви** Базавлук, Микитин Ріг, Чортомлик, Олешки пов’язані з місцями", a: ["основних битв часів козацько-селянських повстань 20–30-х рр. XVII ст.", "розміщення турецьких фортець у гирлі Дніпра й Південного Бугу.", "формування полків реєстрового козацтва.", "розміщення Запорозьких Січей."] },
-      { q: "Укажіть мистецьку пам’ятку, що увічнює провідника Національно-визвольної війни українського народу середини ХVІІ ст.", a: ["img(https://zno.osvita.ua/doc/images/znotest/277/27709/ansa_27709.png)", "img(https://zno.osvita.ua/doc/images/znotest/277/27709/ansb_27709.png)", "img(https://zno.osvita.ua/doc/images/znotest/277/27709/ansc_27709.png)", "img(https://zno.osvita.ua/doc/images/znotest/277/27709/ansd_27709.png)"] },
-      { q: "Автором цитованого документа «…Договори наші… уклав я з Королем Шведським письмовим актом, підписаним з обох сторін… І тепер ми вважати повинні Шведів за своїх приятелів, союзників, добродіїв і немовби од Бога посланих, щоб увільнити нас від рабства… Відомо ж бо, що колись були ми ті, що тепер московці: уряд, первинність і сама назва Русь од нас до них перейшли…» був", a: ["П. Сагайдачний.", "І. Виговський.", "І. Самойлович.", "І. Мазепа."] }
+      { q: "Яке зe чисел є простим?", a: ["4", "6", "7", "9"] },
+      { q: "Чому дорівнює 5 + 7?", a: ["10", "11", "12", "13"] },
+      { q: "Яке число є квадратом іншого?", a: ["5", "7", "16", "13"] }
     ]
   },
   {
@@ -661,7 +603,6 @@ const blocksQuestions = ref([
     questions: [
       {
         q: "Співвіднесіть математиків з їх відкриттями:",
-        i: ["https://zno.osvita.ua/doc/images/znotest/277/27738/english-nmt-2024-01.png"],
         a: [["Евклід", "Піфагор", "Архімед", "Ньютон"], ["Геометрія", "Теорема", "Закон важеля", "Гравітація"]]
       },
       {
@@ -677,40 +618,7 @@ const blocksQuestions = ref([
         a: [["a² + b² = c²", "F = ma", "V = IR", "E = mc²"], ["Закон Піфагора", "Другий закон Ньютона", "Закон Ома", "Рівняння Ейнштейна"]]
       }
     ]
-  },
-  {
-  t: "dd",
-  questions: [
-{ q: `A Creative Essay
-
-A Tennessee teen is sure that others should break the mould after she was reported to earn a place at Yale University with an unusual essay about ordering pizza.
-
-Carolina Williams announced that she had been accepted to the Ivy League school on Twitter earlier this month and shared a copy of her essay that drew high praise (and laughs) from an admissions officer. “I just want Papa John’s pizzeria to know that I wrote a college essay about how much I love to order their pizza and it got me into Yale,” she wrote in a Tweet. When Carolina shared her story on Twitter, Papa John’s founder John Schnatter offered her gift cards, a pizza party for her dorm, free pizza for a year and an internship.
-
-The 18-year-old, who will be the first in her family to go to college, was tasked with writing about something that she loves to do. Williams said she really loves ordering pizza. “Having these warm cardboard boxes at my front door is second nature to me. When I was a child it made me feel grown up. I will always love ordering pizza because of the way eight slices of something so ordinary are able to evoke feelings of independence, comfort, and joy,” a portion of her essay reads.
-
-“I got the idea all on my own and did not really tell anyone about it,” she said. “When my friends found out about it though, they thought it was very funny.”
-
-Her admissions officer apparently did, too. In a letter shared by the teen, the officer said she “laughed so hard” while reading it. “I want you to know that every part of your application was special for our process and we are pleased to be able to offer you a place at Yale,” the officer’s message reads.
-
-Of course, it wasn’t just Williams’ creative essay that brought her a desirable place among the 2,272 students accepted by Yale this year – making a very small, 6.9% acceptance rate. Her application contained all the right ingredients, including high grades, volunteer work, as well as memberships with the English Honours Society, National Honours Society, Model UN and Youth in Government.
-
-But just as she had many choices on what to write about, she also had choices other than Yale. In the end, she chose Auburn University instead. One big reason, she shared, is that the Alabama school is much closer to home.
-
-“I absolutely love Yale, but I felt so at home at Auburn,” she said. “I love the South and the school atmosphere. I will be a part of the Honours College. I’m so privileged to have been accepted by Yale, though!”
-
-Despite the warm response from the admissions team at Yale, Williams will be attending Auburn University in Alabama in the fall with a $72,000 scholarship over four years. Williams plans to study business and economics.
-
-Luckily for Williams, Auburn has a Papa John’s in their student centre on campus.
-
-What does the author mean by saying “break the mould”?`,
-  subquestions: [
-    { question: "Подія 1", a: ["заснування першої Запорозької Січі", "об’єднання ВКЛ і Польщі"] },
-    { question: "Подія 2", a: ["заснування першої Запорозькfsaої Січі", "об’єднання ВКЛ і Поfльщі"] }
-  ],
-  },
-  ]
-  },], [{
+  }], [{
     t: "s",
     questions: [
       { q: "Яке wqrwз чисел є простим?", a: ["4", "6", "7", "9"] },
@@ -755,10 +663,8 @@ const allQuestions = ref(blocksQuestions.value.map(block =>
       t: section.t,
       q: question.q,
       a: question.a,
-      i: question.i,
       current: null,
       saved: false,
-      subquestions: question.subquestions,
       savedAnswer: null,
       savedAt: null,
       ...(section.t === 's' || section.t === 'm' ? { c: 0 } : {})
@@ -797,23 +703,6 @@ watch(() => activeTestIndex, () => {
   globalQCounter.value = 0
 })
 
-function showSubjecConfirm() {
-  const dialog = document.getElementById("confirm");
-  dialog.showModal();
-
-  const confirmBtn = document.getElementById("confirm-submit");
-  const cancelBtn = document.getElementById("confirm-cancel");
-
-  confirmBtn.addEventListener("click", () => {
-    console.log("Test submission confirmed");
-    dialog.close();
-    // Add logic for test submission here
-  });
-
-  cancelBtn.addEventListener("click", () => {
-    dialog.close();
-  });
-}
 const flatQuestions = computed(() => {
   let index = 0
   return blocksQuestions.value[activeTestIndex.value].flatMap(block =>
@@ -847,7 +736,6 @@ function validSet(q) {
 
 async function setActiveBlock(blockIndex) {
   activeTestIndex.value = blockIndex;
-  showSubjecConfirm()
   // loadCurrentBlockQuestions();
   // isComplete.value = currentBlockQuestions.value.map(() => false);
 
@@ -1118,16 +1006,13 @@ onBeforeUnmount(() => {
 function scrollTo(i) {
   const element = document.querySelector(`[data-q="${i}"]`);
   console.log(element);
+  element.classList.remove("not-viewed")
+  console.log(element.classList)
   if (element) {
-    element.classList.remove("not-viewed");
-    console.log(element.classList);
-    const header = document.querySelector(".nmt-header");
-    if (header) {
-      element.style.scrollMarginTop = `${header.offsetHeight + 10}px`; // Set scroll margin to header height
-    }
     element.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
 }
+
 
 window.addEventListener("scroll", () => {
   viewed.value[activeTestIndex.value].add(currentQuestion.value)
@@ -1154,7 +1039,7 @@ function createObserver(activeTestIndex) {
     },
     {
       root: null,
-      rootMargin: '0px 0px -70% 0px',
+      rootMargin: '0px 0px -80% 0px',
       threshold: 0.1
     }
   );

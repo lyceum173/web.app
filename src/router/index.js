@@ -14,14 +14,16 @@ import TOSView from '@/views/TOSView.vue'
 import DashboardView from '@/views/dashboard/DashboardView.vue'
 import SignOut from '@/views/SignOut.vue'
 import LoginView from '@/views/nmt/LoginView.vue'
-import AdminLogin from '@/views/nmt/admin/AdminLogin.vue'
 import DashboarView from '@/views/nmt/DashboarView.vue'
 import LogsView from '@/views/LogsView.vue'
 import DragNDrop from '@/views/nmt/NMTDemo.vue'
 import TeacherDashboardView from '@/views/lms/teacher/TeacherDashboardView.vue'
 import AllCoursesView from '@/views/lms/teacher/AllCoursesView.vue'
 import TeacherNMTView from '@/views/lms/teacher/TeacherNMTView.vue'
-
+import AdminSetup from '@/views/nmt/admin/AdminSetup.vue'
+import AdminDashboard from '@/views/nmt/admin/AdminDashboard.vue'
+import AdminSessionView from '@/views/nmt/admin/AdminSessionView.vue'
+import NMTStartView from '@/views/nmt/NMTStartView.vue'
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -112,13 +114,8 @@ const router = createRouter({
       name: 'BlockJSON',
       component: NotFound,
     },
-
     {
       path: '/nmt/',
-      redirect: "/nmt/login"
-    },
-    {
-      path: '/nmt/login',
       name: 'nmt-login',
       component: LoginView,
     },
@@ -127,11 +124,30 @@ const router = createRouter({
       name: 'nmt-dashboard',
       component: DashboarView,
     },
-
+    {
+      path: '/nmt/start/',
+      name: 'nmt-start',
+      component: NMTStartView,
+    },
     {
       path: '/nmt/admin/',
       name: 'nmt-admin',
-      component: AdminLogin,
+      component: AdminDashboard,
+    },
+    // {
+    //   path: '/nmt/admin/dashboard',
+    //   name: 'nmt-admin-dashboard',
+    //   component: AdminDashboard,
+    // },
+    {
+      path: '/nmt/admin/dashboard/course/:id',
+      name: 'nmt-admin-dashboard-course',
+      component: AdminSessionView,
+    },
+    {
+      path: '/nmt/admin/setup',
+      name: 'nmt-admin-setup',
+      component: AdminSetup,
     },
     {
       path: '/dev/logs/',

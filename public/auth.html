@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>WebAuthn Demo</title>
+  <style>
+    body { font-family: sans-serif; padding: 2rem; }
+    button { margin: 1rem 0; padding: 0.5rem 1rem; font-size: 1rem; }
+  </style>
+</head>
+<body>
+  <h1>🔐 Lyceum LMS – WebAuthn Demo</h1>
+
+  <button onclick="register()">Register (Biometric)</button>
+  <button onclick="login()">Login (Biometric)</button>
+
+  <p id="status"></p>
+
+  <script>
+    const base64ToArrayBuffer = str => Uint8Array.from(atob(str), c => c.charCodeAt(0));
+    const arrayBufferToBase64 = buffer => btoa(String.fromCharCode(...new Uint8Array(buffer)));
+
+    async function register() {
+      const challenge = base64ToArrayBuffer("randomChallenge123456"); // In real apps: fetch from server
+      const userId = base64ToArrayBuffer("user-id-1234");
+
+      const options = {
+        publicKey: {
+          challenge,
+          rp: { name: "Lyceum LMS" },
+          user: {
+            id: userId,
+            name: "admin@example.com",
+            displayName: "Lyceum Admin"
+          },
+          pubKeyCredParams: [{ alg: -7, type: "public-key" }],
+          authenticatorSelection: {
+            authenticatorAttachment: "platform", // Use device biometrics
+            userVerification: "required"
+          },
+          timeout: 60000,
+          attestation: "none"
+        }
+      };
+
+      try {
+        const credential = await navigator.credentials.create(options);
+        const idBase64 = arrayBufferToBase64(credential.rawId);
+        localStorage.setItem("lyceum-credential-id", idBase64);
+        document.getElementById("status").innerText = "✅ Registered successfully!";
+      } catch (err) {
+        document.getElementById("status").innerText = `❌ Registration failed: ${err}`;
+      }
+    }
+
+    async function login() {
+      const storedId = localStorage.getItem("lyceum-credential-id");
+      if (!storedId) {
+        document.getElementById("status").innerText = "❗ Please register first.";
+        return;
+      }
+
+      const options = {
+        publicKey: {
+          challenge: base64ToArrayBuffer("randomLoginChallenge123"), // In real apps: fetch from server
+          allowCredentials: [{
+            id: base64ToArrayBuffer(storedId),
+            type: "public-key",
+            transports: ["internal"]
+          }],
+          userVerification: "required",
+          timeout: 60000
+        }
+      };
+
+      try {
+        const assertion = await navigator.credentials.get(options);
+        // Normally you'd send `assertion` to your backend to verify it
+        localStorage.setItem("admin-auth", "true");
+        document.getElementById("status").innerText = "✅ Biometric login successful!";
+      } catch (err) {
+        document.getElementById("status").innerText = `❌ Login failed: ${err}`;
+      }
+    }
+  </script>
+</body>
+</html>

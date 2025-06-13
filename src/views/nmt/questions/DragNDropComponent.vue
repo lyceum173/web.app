@@ -1,58 +1,56 @@
 <template>
-
-      <div class="dropdown">
-        <!-- QUESTIONS -->
-        <div class="dropdown-list dropdown-list_questions">
-          <div
-            class="dropdown-row"
-            v-for="(question, index) in questions"
-            :key="'q' + index"
-          >
-            <span class="dropdown--item_question">{{ index + 1 }}. {{ question }}</span>
-            <span class="arrow">&#8594;</span>
-            <span
-              class="dropdown--item_blank"
-              @drop="handleDrop($event, index)"
-              @dragover.prevent
-            >
-              <span v-if="matches[index]" class="dropdown--item">
-                {{
-                  letter[allAnswers.findIndex(a => a === matches[index])]
-                }}
-                {{ matches[index] }}
-                <button class="dropdown--close" @click="removeAnswer(index)">
-                  <span>&#10005;</span>
-                </button>
-              </span>
-            </span>
-          </div>
-        </div>
-  
-        <!-- ANSWERS -->
-        <!-- ANSWERS -->
-<div class="dropdown-list dropdown-list_answers">
-  <div
-    class="dropdown-row"
-    v-for="(answer, index) in availableAnswers"
-    :key="'a' + index"
-  >
-    <span
-      class="dropdown--item"
-      :class="{ dragging: draggedAnswer === answer }"
-      draggable="true"
-      @dragstart="startDrag(answer)"
-    >
-    
-      {{ letter[allAnswers.findIndex(a => a === answer)] }}
-      {{ answer }}
-    </span>
-  </div>
-</div>
-
-
+  <div class="dropdown">
+    <!-- QUESTIONS -->
+    <div class="dropdown-list dropdown-list_questions">
+      <div
+        class="dropdown-row"
+        v-for="(question, index) in questions"
+        :key="'q' + index"
+      >
+        <span class="dropdown--item_question">{{ index + 1 }}. {{ question }}</span>
+        <span class="arrow">→</span>
+        <span
+          class="dropdown--item_blank"
+          @drop="handleDrop($event, index)"
+          @dragover.prevent
+          @click="handleBlankClick(index)"
+        >
+          <span v-if="matches[index]" class="dropdown--item">
+            {{ letter[allAnswers.findIndex(a => a === matches[index])] }}
+            {{ matches[index] }}
+            <button class="dropdown--close" @click="removeAnswer(index)">
+              <span>✕</span>
+            </button>
+          </span>
+        </span>
+      </div>
     </div>
-  </template>
-  <script setup>
+
+    <!-- ANSWERS -->
+    <div class="dropdown-list dropdown-list_answers">
+      <div
+        class="dropdown-row"
+        v-for="(answer, index) in availableAnswers"
+        :key="'a' + index"
+      >
+        <span
+          class="dropdown--item"
+          :class="{ dragging: draggedAnswer === answer, focus: focusedAnswer === answer }"
+          draggable="true"
+          @dragstart="startDrag(answer)"
+          @click="handleAnswerClick(answer)"
+          @focus="handleAnswerClick(answer)"
+          tabindex="0"
+        >
+          {{ letter[allAnswers.findIndex(a => a === answer)] }}
+          {{ answer }}
+        </span>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script setup>
 import { ref, computed, watch } from 'vue'
 
 const emit = defineEmits(['save', 'update:modelValue'])
@@ -78,8 +76,11 @@ const letter = ref(["А.","Б.","В.","Г.","Д.","Е.","Ж."])
 const [questionList, answerList] = props.data
 const questions = ref(questionList)
 const allAnswers = ref(answerList)
-
 const matches = ref([])
+
+// Track the currently focused answer
+const focusedAnswer = ref(null)
+const draggedAnswer = ref(null)
 
 // Initialize matches from modelValue or fallback to savedAnswers
 function initMatches() {
@@ -102,21 +103,31 @@ watch(() => props.modelValue, (newVal) => {
   }
 })
 
-const draggedAnswer = ref(null)
-
 const availableAnswers = computed(() => {
   return allAnswers.value.filter(a => !matches.value.includes(a))
 })
 
 function startDrag(answer) {
   draggedAnswer.value = answer
-  console.log(this)
+  focusedAnswer.value = null // Clear focus when dragging
 }
 
 function handleDrop(e, questionIndex) {
   if (draggedAnswer.value !== null) {
     matches.value[questionIndex] = draggedAnswer.value
     draggedAnswer.value = null
+    emit('update:modelValue', [...matches.value])
+  }
+}
+
+function handleAnswerClick(answer) {
+  focusedAnswer.value = answer
+}
+
+function handleBlankClick(questionIndex) {
+  if (focusedAnswer.value !== null && !matches.value.includes(focusedAnswer.value)) {
+    matches.value[questionIndex] = focusedAnswer.value
+    focusedAnswer.value = null
     emit('update:modelValue', [...matches.value])
   }
 }
@@ -143,9 +154,19 @@ function triggerSave() {
 defineExpose({ triggerSave })
 </script>
 
-  
+<style scoped>
+.dropdown--item.focus {
+  /* Define your focus styles, e.g., */
+  background-color: #e0e0e0 !important;
+  outline: none;
+}
+</style> 
   
 <style scoped>
+
+.dropdown--item {
+  cursor:pointer;
+}
 * {
      box-sizing: border-box;
 }
@@ -180,6 +201,7 @@ defineExpose({ triggerSave })
 }
 .dropdown-row .dropdown--item_blank{
     grid-column: span 4 / span 4;
+    cursor: pointer;
 }
 .dropdown-list_answers {
   width: calc(40% - 10px);

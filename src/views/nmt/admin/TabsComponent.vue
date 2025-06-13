@@ -1,47 +1,28 @@
 <template>
-    <br>
-    <nav  v-if="sub?.includes('m') && !start"  class="tabs">
+    <nav class="tabs">
         <div class="tabs__container">
         <a class="tab active">
             Іспит
         </a>
-        <a class="tab" target="_blank"href="https://testportal.gov.ua/wp-content/uploads/2022/04/ZNO_Math_dovidkovy-materialy.pdf">
+        <a  v-if="sub.includes('m')" class="tab" target="_blank"href="https://testportal.gov.ua/wp-content/uploads/2022/04/ZNO_Math_dovidkovy-materialy.pdf">
             Математика: довідкові матеріали
         </a>
-    </div>
-   
-</nav>
- <nav  v-else-if="!start" class="tabs">
-        <div class="tabs__container">
-        <a class="tab active">
-            Іспит
-        </a>
-        <a  class="tab" target="_blank"href="https://testportal.gov.ua/wp-content/uploads/2024/01/Fizyka_dovidkovi-materialy-1.pdf">
+        <a v-if="sub.includes('p')" class="tab" target="_blank"href="https://testportal.gov.ua/wp-content/uploads/2024/01/Fizyka_dovidkovi-materialy-1.pdf">
             Фізика: довідкові матеріали
         </a>
-        <a class="tab" target="_blank"href="https://testportal.gov.ua/wp-content/uploads/2023/02/Hmiya_dovidkovi-materialy.pdf">
+        <a v-if="sub.includes('c')" class="tab" target="_blank"href="https://testportal.gov.ua/wp-content/uploads/2023/02/Hmiya_dovidkovi-materialy.pdf">
             Хімія: довідкові матеріали
         </a>
     </div>
    
 </nav>
-    <nav v-else>
-        <div class="tabs__container">
-        <a class="tab active">
-            Іспит
-        </a>
-    </div>
-    </nav>
+    
 </template>
 <script setup>
 
 const { sub } = defineProps({
   sub: {
     type: Array,
-    required: false
-  }, 
-  start: {
-    type: Boolean,
     required: false
   }
 });
@@ -82,13 +63,13 @@ const { sub } = defineProps({
   border-color: transparent
     }
     .tab:hover {
-        color: #e62050;
+        color: #000000;
   border-bottom-style: solid;
   background-color: transparent;
   border-bottom: solid 4px;
     }
     .tab.active {
-        color: #e62050;
+        color: #000000 !important;
   border-bottom-style: solid;
   background-color: transparent;
   border-bottom: solid 4px;

@@ -1,6 +1,6 @@
 <template>
     <HeaderLogin relative></HeaderLogin>
-    <main v-if="isSeb" class="main" nmt>
+    <main v-if="!isSeb" class="main" nmt>
 <dialog id="code" class="modal">
     <div class="modal-box">
         <h3 class="text-lg font-bold">Код доступу до блоку</h3>
@@ -25,7 +25,7 @@
       </div>
       <div class="exam-item__info">
         <p id="test-title">{{ testTitle }}</p>
-        <button onclick="code.showModal()" id="start-exam" class="exam-button">
+        <button @click="startExam()" id="start-exam" class="exam-button">
           <p v-if="testEnded">ТЕСТУВАННЯ ЗАВЕРШЕНО</p>
           <p v-else> ПЕРЕЙТИ ДО ТЕСТУ</p>
         </button>
@@ -139,11 +139,9 @@ onMounted(() => {
 })
 
 function startExam() {
-  if (accessCode.value == "173") {
-    router.push("/nmt/demo")
-  } else {
-    alert("Невірний код доступу")
-  }
+ 
+    router.push("/nmt/start")
+  
   
 }
 

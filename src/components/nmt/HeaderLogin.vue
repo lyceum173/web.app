@@ -92,12 +92,16 @@ font-weight: 600;
 <script setup>
 import { ref } from 'vue';
 const isLogin = ref(false)
-console.log(window.location.pathname === "/nmt/login")
-isLogin.value = window.location.pathname !== "/nmt/login"
+console.log(window.location.pathname === "/nmt/")
+isLogin.value = window.location.pathname !== "/nmt/"
 
 const displayName = ref(sessionStorage.getItem("n_displayName"))
 const props = defineProps({
   relative: {
+    type: Boolean,
+    default: false
+  },
+  login: {
     type: Boolean,
     default: false
   }

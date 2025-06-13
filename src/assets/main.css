@@ -3,6 +3,7 @@
 @import url(./css/components/button.css);
 @import url(./css/components/input.css);
 @import url(./css/components/modal.css);
+@import url(./hgi.css);
 
 @supports (overflow:clip) {
   .wrapper {
@@ -145,7 +146,6 @@ header {
 }
 header, footer {
   background: var(--bg-light);
-  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.042), 0 1px 2px -1px rgb(0 0 0 / 0.1);
 }
 .header__container {
   width: 100%;
